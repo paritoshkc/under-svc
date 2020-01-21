@@ -1,0 +1,4 @@
+logging:
+  level: INFO
+  loggers:
+    ie.tcd.cs7cs3.undersvc: DEBUG

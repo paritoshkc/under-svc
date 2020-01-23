@@ -20,7 +20,7 @@ spec:
             httpGet:
               path: /healthcheck
               port: 8081
-              initialDelaySeconds: 3
-              periodSeconds: 10
+            initialDelaySeconds: 3
+            periodSeconds: 10
       imagePullSecrets:
         - name: registry.gitlab.com

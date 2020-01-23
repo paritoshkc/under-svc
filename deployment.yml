@@ -12,7 +12,7 @@ spec:
       containers:
         - name: undersvc
           image: registry.gitlab.com/ase-under/undersvc
-          imagePullPolicy: always
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
             - containerPort: 8081

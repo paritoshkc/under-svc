@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: undersvc
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: undersvc
+    spec:
+      containers:
+        - name: undersvc
+          image: registry.gitlab.com/ase-under/undersvc
+          imagePullPolicy: always
+          ports:
+            - containerPort: 8080
+            - containerPort: 8081
+          livenessProbe:
+            httpGet:
+              path: /healthcheck
+              port: 8081
+              initialDelaySeconds: 3
+              periodSeconds: 10
+          imagePullSecrets:
+            - name: registry.gitlab.com

@@ -1,28 +1,45 @@
-image: maven:latest
+image: docker:latest
+services:
+  - docker:dind
 
 variables:
+  DOCKER_DRIVER: overlay
   MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+stages:
+  - build
+  - package
+  - deploy
 
 cache:
   paths:
     - .m2/repository
     - target/
 
-build:
+maven-build:
   stage: build
   script:
-    - mvn $MAVEN_CLI_OPTS compile
-
-test:
-  stage: test
-  script:
-    - mvn $MAVEN_CLI_OPTS test
-
-deploy:
-  stage: deploy
-  script:
-    - mvn $MAVEN_CLI_OPTS package
+    - mvn $MAVEN_CLI_OPTS package -B
   artifacts:
     paths:
       - target/*.jar
+
+docker-build:
+  stage: package
+  script:
+    - docker build -t registry.gitlab.com/ase-under/undersvc .
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+    - docker push registry.gitlab.com/ase-under/undersvc
+
+k8s-deploy:
+  image: google/cloud-sdk
+  stage: deploy
+  script:
+    - echo "$GOOGLE_KEY" > key.json
+    - gcloud auth activate-service-account --key-file key.json
+    - gcloud config set compute/zone europe-west-1b
+    - gcloud config set project under
+    - gcloud config set container/use_client_certificate true
+    - gcloud container clusters get-credentials under-default
+    - kubectl apply -f deployment.yml

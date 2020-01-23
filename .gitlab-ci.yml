@@ -39,8 +39,6 @@ k8s-deploy:
   script:
     - echo "$GOOGLE_KEY" > key.json
     - gcloud auth activate-service-account --key-file key.json
-    - gcloud config set compute/zone europe-west1-b
-    - gcloud config set project under-266013
-    - gcloud config set container/use_client_certificate true
-    - gcloud container clusters get-credentials under-default
+    #- gcloud config set container/use_client_certificate true
+    - gcloud container clusters get-credentials under-default --zone europe-west1-b --project under-266013
     - kubectl apply -f deployment.yml

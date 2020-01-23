@@ -39,7 +39,7 @@ k8s-deploy:
   script:
     - echo "$GOOGLE_KEY" > key.json
     - gcloud auth activate-service-account --key-file key.json
-    - gcloud config set compute/zone europe-west-1b
+    - gcloud config set compute/zone europe-west1-b
     - gcloud config set project under
     - gcloud config set container/use_client_certificate true
     - gcloud container clusters get-credentials under-default

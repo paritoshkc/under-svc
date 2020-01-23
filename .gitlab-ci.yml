@@ -18,6 +18,7 @@ cache:
     - target/
 
 maven-build:
+  image: maven:latest
   stage: build
   script:
     - mvn $MAVEN_CLI_OPTS package -B

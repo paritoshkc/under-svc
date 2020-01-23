@@ -19,10 +19,10 @@ test:
   script:
     - mvn $MAVEN_CLI_OPTS test
 
-package:
-  stage: package
+deploy:
+  stage: deploy
   script:
     - mvn $MAVEN_CLI_OPTS package
   artifacts:
     paths:
-      - target/
+      - target/*.jar

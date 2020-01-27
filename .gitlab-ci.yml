@@ -4,27 +4,10 @@ services:
 
 variables:
   DOCKER_DRIVER: overlay
-  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
-  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
 
 stages:
-  - build
   - package
   - deploy
-
-cache:
-  paths:
-    - .m2/repository
-    - target/
-
-maven-build:
-  image: maven:latest
-  stage: build
-  script:
-    - mvn $MAVEN_CLI_OPTS package -B
-  artifacts:
-    paths:
-      - target/*.jar
 
 docker-build:
   stage: package

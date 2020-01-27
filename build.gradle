@@ -1,20 +1,38 @@
-apply plugin: 'java'
-apply plugin: 'maven'
+plugins {
+  id "com.github.johnrengelman.shadow" version "5.2.0"
+}
 
-group = 'ie.tcd.cs7cs3.undersvc'
+group = 'Undersvc'
 version = '0.0.1'
+description = """Undersvc"""
 
-description = """undersvc"""
+apply plugin: 'java'
+
+project.ext {
+    dropwizardVersion = '2.0.0'
+    mainClass = 'ie.tcd.cs7cs3.undersvc.UndersvcApplication'
+}
 
 sourceCompatibility = 1.8
-targetCompatibility = 1.8
+
 tasks.withType(JavaCompile) {
 	options.encoding = 'UTF-8'
 }
 
 repositories {
-     maven { url "https://repo.maven.apache.org/maven2" }
+    jcenter()
 }
+
 dependencies {
-    compile group: 'io.dropwizard', name: 'dropwizard-core', version:'2.0.0'
+    compile group: 'io.dropwizard', name: 'dropwizard-core', version: dropwizardVersion
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+
+shadowJar {
+    mergeServiceFiles()
+    exclude 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.SF'
+    manifest {
+        attributes 'Main-Class': mainClass
+    }
 }

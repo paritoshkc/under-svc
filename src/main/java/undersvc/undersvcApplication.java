@@ -4,10 +4,10 @@ import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
-public class undersvcApplication extends Application<undersvcConfiguration> {
-
+public class UndersvcApplication extends Application<undersvcConfiguration> {
+g
     public static void main(final String[] args) throws Exception {
-        new undersvcApplication().run(args);
+        new UndersvcApplication().run(args);
     }
 
     @Override

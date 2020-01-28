@@ -31,6 +31,7 @@ public class ListGroupsResource {
 
     @GET
     public List<group> handleGroupsGet() {
+        LOG.info("found {} groups", dummyGroups.size());
         return dummyGroups;
     }
 }

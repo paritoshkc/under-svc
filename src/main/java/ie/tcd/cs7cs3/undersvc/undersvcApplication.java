@@ -4,7 +4,7 @@ import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
-public class UndersvcApplication extends Application<UndersvcConfiguration> {
+public class undersvcApplication extends Application<UndersvcConfiguration> {
     public static void main(final String[] args) throws Exception {
         new UndersvcApplication().run(args);
     }

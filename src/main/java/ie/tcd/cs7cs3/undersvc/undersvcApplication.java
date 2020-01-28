@@ -1,5 +1,6 @@
 package ie.tcd.cs7cs3.undersvc;
 
+import ie.tcd.cs7cs3.undersvc.resources.ListGroupsResource;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -23,6 +24,7 @@ public class undersvcApplication extends Application<undersvcConfiguration> {
     public void run(final undersvcConfiguration configuration,
                     final Environment environment) {
         // TODO: implement application
+        environment.jersey().register(new ListGroupsResource());
     }
 
 }

@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.UUID;
 
 public class group {
+    public static final String Forming = "Forming";
+    public static final String Moving = "Moving";
+    public static final String Finished = "Finished";
     private String groupState;
     private List<point> points;
     private List<UUID> memberUUIDs;

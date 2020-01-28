@@ -1,4 +1,5 @@
 FROM openjdk:8u232-slim AS builder
+VOLUME /tmp
 ENV APPDIR=/undersvc
 RUN mkdir -p $APPDIR/src/main/java
 WORKDIR $APPDIR

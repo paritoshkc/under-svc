@@ -10,7 +10,7 @@ apply plugin: 'java'
 
 project.ext {
     dropwizardVersion = '2.0.0'
-    mainClass = 'ie.tcd.cs7cs3.undersvc.UndersvcApplication'
+    mainClass = 'ie.tcd.cs7cs3.undersvc.undersvcApplication'
 }
 
 sourceCompatibility = 1.8

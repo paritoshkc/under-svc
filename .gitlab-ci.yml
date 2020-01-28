@@ -11,6 +11,8 @@ stages:
 
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
+  - echo $GRADLE_USER_HOME
+  - ls -la
 
 docker-build:
   stage: package

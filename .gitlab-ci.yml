@@ -9,6 +9,9 @@ stages:
   - package
   - deploy
 
+before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+
 docker-build:
   stage: package
   script:

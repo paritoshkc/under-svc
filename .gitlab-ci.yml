@@ -6,6 +6,7 @@ variables:
   DOCKER_DRIVER: overlay
 
 stages:
+  - build
   - package
   - deploy
 
@@ -13,6 +14,17 @@ before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
   - echo $GRADLE_USER_HOME
   - ls -la
+
+build:
+  stage: build
+  image: openjdk:8u232-slim
+  script:
+    - chmod +x ./gradlew
+    - ./gradlew test
+    - ./gradlew shadowJar
+  artifacts:
+    paths:
+      - build/libs/*.jar
 
 docker-build:
   stage: package

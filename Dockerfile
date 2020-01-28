@@ -1,8 +1,8 @@
 FROM openjdk:8u232-slim AS builder
 VOLUME /tmp
-WORKDIR /app
 ADD build.gradle gradlew* /app/
 ADD gradle/wrapper /app/gradle/wrapper
+WORKDIR /app
 RUN chmod +x ./gradlew
 RUN ./gradlew dependencies
 COPY . .

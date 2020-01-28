@@ -3,6 +3,7 @@ package ie.tcd.cs7cs3.undersvc.resources;
 import com.google.common.collect.ImmutableList;
 import ie.tcd.cs7cs3.undersvc.api.group;
 import ie.tcd.cs7cs3.undersvc.api.point;
+import ie.tcd.cs7cs3.undersvc.db.GroupDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,8 +16,9 @@ import java.util.UUID;
 
 @Path("/groups")
 @Produces(MediaType.APPLICATION_JSON)
-public class ListGroupsResource {
-    private static final Logger LOG = LoggerFactory.getLogger(ListGroupsResource.class);
+public class GroupsResource {
+    private final GroupDAO groupDAO;
+    private static final Logger LOG = LoggerFactory.getLogger(GroupsResource.class);
     private static final List<group> dummyGroups = ImmutableList.of(
             new group(
                     group.Forming,
@@ -27,7 +29,9 @@ public class ListGroupsResource {
             )
     );
 
-    public ListGroupsResource() {}
+    public GroupsResource(final GroupDAO groupDAO) {
+        this.groupDAO = groupDAO;
+    }
 
     @GET
     public List<group> handleGroupsGet() {

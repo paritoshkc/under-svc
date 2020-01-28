@@ -2,3 +2,9 @@ logging:
   level: INFO
   loggers:
     ie.tcd.cs7cs3.undersvc: DEBUG
+database:
+  driverClass: com.mysql.jdbc.Driver
+  user: user
+  password: password
+  url: jdbc:mysql://db:3306/db
+  validationQuery: "/* undersvc Health Check */ SELECT 1"

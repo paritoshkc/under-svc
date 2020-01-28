@@ -3,6 +3,7 @@ VOLUME /tmp
 WORKDIR /app
 ADD build.gradle gradlew* /app/
 ADD gradle/wrapper /app/gradle/wrapper
+RUN chmod +x ./gradlew
 RUN ./gradlew dependencies
 COPY . .
 RUN ./gradlew test

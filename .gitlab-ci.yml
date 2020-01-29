@@ -37,7 +37,7 @@ k8s-deploy:
   image: google/cloud-sdk
   stage: deploy
   script:
-    - echo "$GOOGLE_KEY" > key.json
+    - echo "$GOOGLE_KEY" | base64 -d > key.json
     - gcloud auth activate-service-account --key-file key.json
     - gcloud config set compute/zone europe-west1-b
     - gcloud config set project under-266013

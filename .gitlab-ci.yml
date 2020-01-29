@@ -10,11 +10,6 @@ stages:
   - package
   - deploy
 
-before_script:
-  - export GRADLE_USER_HOME=`pwd`/.gradle
-  - echo $GRADLE_USER_HOME
-  - ls -la
-
 build:
   stage: build
   image: openjdk:8u232-slim
@@ -29,9 +24,11 @@ build:
 docker-build:
   stage: package
   script:
-    - docker build -t registry.gitlab.com/ase-under/undersvc .
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
-    - docker push registry.gitlab.com/ase-under/undersvc
+    - docker pull $CI_REGISTRY_IMAGE:latest || true
+    - docker build --cache-from $CI_REGISTRY_IMAGE:latest --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA --tag $CI_REGISTRY_IMAGE:latest .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE:latest
 
 k8s-deploy:
   image: google/cloud-sdk
@@ -43,6 +40,4 @@ k8s-deploy:
     - gcloud config set project under-266013
     #- gcloud config set container/use_client_certificate true
     - gcloud container clusters get-credentials under-default
-    - kubectl delete secret registry.gitlab.com || true
-    - kubectl create secret docker-registry registry.gitlab.com --docker-server=https://registry.gitlab.com --docker-username=$GITLAB_REGISTRY_USER --docker-password=$GITLAB_REGISTRY_PASS --docker-email=public@cianjohnston.ie
-    - kubectl apply -f deployment.yml
+    - kubectl set image deployment/undersvc undersvc=$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA

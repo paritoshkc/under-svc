@@ -12,6 +12,10 @@ spec:
       containers:
         - name: undersvc
           image: registry.gitlab.com/ase-under/undersvc
+          volumeMounts:
+            - name: undersvc_prod_config_vol
+              mountPath: /config.yml
+              readOnly: true
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -22,5 +26,10 @@ spec:
               port: 8081
             initialDelaySeconds: 3
             periodSeconds: 10
+      volumes:
+        - name: undersvc_prod_config_vol
+          secret:
+            # kubectl create secret generic undersvc-prod-config --from-file=./config.yml
+            secretName: undersvc-prod-config
       imagePullSecrets:
         - name: registry.gitlab.com

@@ -1,6 +1,7 @@
 FROM openjdk:8u232-jre-slim
-ADD build/libs/undersvc-0.0.1-all.jar /undersvc.jar
-ADD config.yml /config.yml
+RUN mkdir -p /app/conf
+ADD build/libs/undersvc-0.0.1-all.jar /app/undersvc.jar
+ADD config.yml /app/conf/config.yml
 EXPOSE 8080/tcp
 EXPOSE 8081/tcp
-ENTRYPOINT [ "java", "-jar", "/undersvc.jar", "server", "config.yml"]
+ENTRYPOINT [ "java", "-jar", "/app/undersvc.jar", "server", "/app/conf/config.yml"]

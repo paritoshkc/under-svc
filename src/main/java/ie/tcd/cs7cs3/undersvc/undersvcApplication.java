@@ -4,8 +4,12 @@ import ie.tcd.cs7cs3.undersvc.api.group;
 import ie.tcd.cs7cs3.undersvc.db.GroupDAO;
 import ie.tcd.cs7cs3.undersvc.resources.GroupsResource;
 import io.dropwizard.Application;
+import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
+import io.dropwizard.configuration.SubstitutingSourceProvider;
 import io.dropwizard.db.DataSourceFactory;
+import io.dropwizard.db.PooledDataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
+import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
@@ -24,6 +28,18 @@ public class undersvcApplication extends Application<undersvcConfiguration> {
 
     @Override
     public void initialize(final Bootstrap<undersvcConfiguration> bootstrap) {
+        bootstrap.setConfigurationSourceProvider(
+                new SubstitutingSourceProvider(
+                        bootstrap.getConfigurationSourceProvider(),
+                        new EnvironmentVariableSubstitutor(false)
+                )
+        );
+        bootstrap.addBundle(new MigrationsBundle<undersvcConfiguration>() {
+            @Override
+            public PooledDataSourceFactory getDataSourceFactory(undersvcConfiguration configuration) {
+                return configuration.getDatabase();
+            }
+        });
         bootstrap.addBundle(hibernate);
     }
 

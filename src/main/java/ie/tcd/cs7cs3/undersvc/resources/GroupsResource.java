@@ -22,15 +22,6 @@ import java.util.UUID;
 public class GroupsResource {
     private final GroupDAO groupDAO;
     private static final Logger LOG = LoggerFactory.getLogger(GroupsResource.class);
-    private static final List<group> dummyGroups = ImmutableList.of(
-            new group(
-                    group.Forming,
-                    ImmutableList.of(new point(1.0, 2.0)),
-                    ImmutableList.of(UUID.fromString("783575bf-5629-44af-9a5e-c22174d722e3")),
-                    1234567,
-                    ImmutableList.of()
-            )
-    );
 
     /**
      * GroupsResource creates a new instance of a GroupsResource.
@@ -43,8 +34,6 @@ public class GroupsResource {
 
     @GET
     public List<group> handleGroupsGet() {
-        // TODO: fetch from DB
-        LOG.info("found {} groups", dummyGroups.size());
-        return dummyGroups;
+        return groupDAO.listGroups();
     }
 }

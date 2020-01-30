@@ -27,24 +27,18 @@ dependencies {
     compile group: 'io.dropwizard', name: 'dropwizard-core', version: dropwizardVersion
     compile group: 'io.dropwizard', name: 'dropwizard-hibernate', version: dropwizardVersion
     compile group: 'io.dropwizard', name: 'dropwizard-migrations', version: dropwizardVersion
+    compile group: 'com.h2database', name: 'h2', version: '1.4.200'
+    compile group: 'org.hibernate', name: 'hibernate-spatial', version: '5.4.10.Final'
     implementation 'mysql:mysql-connector-java:8.0.19'
     testCompile group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.6.0'
     testCompile group: 'io.dropwizard', name: 'dropwizard-testing', version: dropwizardVersion
     testCompile group: 'org.mockito', name: 'mockito-core', version: '2.+'
 }
 
-
 shadowJar {
     mergeServiceFiles()
     exclude 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.SF'
     manifest {
         attributes 'Main-Class': mainClass
-    }
-}
-
-test {
-    useJUnitPlatform()
-    testLogging {
-        events "passed", "skipped", "failed"
     }
 }

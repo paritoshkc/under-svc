@@ -23,4 +23,6 @@ Builds and deployment are done automatically via Gitlab CI (see: `.gitlab-ci.yml
 
 The application is run in Google Kubernetes Engine (see: `deployment.yml`).
 
+Production secrets are stored in Kubernetes and mounted as a volume at runtime (again, see `deployment.yml`).
+
 All you need to do is `git push origin master` and everything should happen automatically.

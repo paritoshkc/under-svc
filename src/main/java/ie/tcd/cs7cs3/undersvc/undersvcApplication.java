@@ -13,6 +13,9 @@ import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
+/**
+ * undersvcApplication is the base application for undersvc.
+ */
 public class undersvcApplication extends Application<undersvcConfiguration> {
     private final HibernateBundle<undersvcConfiguration> hibernate = new HibernateBundle<undersvcConfiguration>(group.class) {
         @Override
@@ -21,11 +24,19 @@ public class undersvcApplication extends Application<undersvcConfiguration> {
         }
     };
 
+    /**
+     * getName returns the name of the application.
+     * @return the name of the application
+     */
     @Override
     public String getName() {
         return "undersvc";
     }
 
+    /**
+     * initialize is called at startup to bootstrap required runtime dependencies.
+     * @param bootstrap required configuration for bootstrapping
+     */
     @Override
     public void initialize(final Bootstrap<undersvcConfiguration> bootstrap) {
         bootstrap.setConfigurationSourceProvider(
@@ -43,6 +54,11 @@ public class undersvcApplication extends Application<undersvcConfiguration> {
         bootstrap.addBundle(hibernate);
     }
 
+    /**
+     * run runs the application.
+     * @param configuration the runtime configuration
+     * @param environment environment variables etc.
+     */
     @Override
     public void run(final undersvcConfiguration configuration,
                     final Environment environment) {

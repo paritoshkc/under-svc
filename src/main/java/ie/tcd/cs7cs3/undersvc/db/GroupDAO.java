@@ -6,7 +6,7 @@ import org.hibernate.SessionFactory;
 
 public class GroupDAO extends AbstractDAO<group> {
     /**
-     * Creates a new DAO with a given session provider.
+     * GroupDAO creates a new DAO with a given session provider.
      *
      * @param sessionFactory a session provider
      */

@@ -14,6 +14,9 @@ import javax.ws.rs.core.MediaType;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * {@link GroupsResource} is a resource for handling GET, POST and PUT requests to `/groups`.
+ */
 @Path("/groups")
 @Produces(MediaType.APPLICATION_JSON)
 public class GroupsResource {
@@ -29,12 +32,18 @@ public class GroupsResource {
             )
     );
 
+    /**
+     * GroupsResource creates a new instance of a GroupsResource.
+     *
+     * @param groupDAO a DAO for fetching groups from a datasource.
+     */
     public GroupsResource(final GroupDAO groupDAO) {
         this.groupDAO = groupDAO;
     }
 
     @GET
     public List<group> handleGroupsGet() {
+        // TODO: fetch from DB
         LOG.info("found {} groups", dummyGroups.size());
         return dummyGroups;
     }

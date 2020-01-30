@@ -3,6 +3,9 @@ package ie.tcd.cs7cs3.undersvc.api;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * group is a class to represent a group in JSON
+ */
 public class group {
     public static final String Forming = "Forming";
     public static final String Moving = "Moving";

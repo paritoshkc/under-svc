@@ -18,4 +18,42 @@ public class GroupRestriction {
 
     @Column(name = "value")
     private int value;
+
+    public GroupRestriction() {};
+
+    public GroupRestriction(
+            final long id,
+            final Group group,
+            final String type,
+            final int value
+    ) {
+        this.id = id;
+        this.group = group;
+        this.type = type;
+        this.value = value;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
 }

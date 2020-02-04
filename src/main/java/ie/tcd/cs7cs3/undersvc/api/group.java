@@ -1,10 +1,15 @@
 package ie.tcd.cs7cs3.undersvc.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import ie.tcd.cs7cs3.undersvc.core.Group;
+import ie.tcd.cs7cs3.undersvc.core.GroupMember;
+import ie.tcd.cs7cs3.undersvc.core.GroupRestriction;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * group is a class to represent a group in JSON
@@ -15,8 +20,9 @@ public class group {
     public static final String Moving = "Moving";
     public static final String Finished = "Finished";
     private String groupState;
-    private List<point> points;
+    private String points;
     private List<UUID> memberUUIDs;
+    private long createTime;
     private long depTime;
     private List<restriction> restrictions;
 
@@ -24,12 +30,22 @@ public class group {
         // jackson
     }
 
-    public group(String groupState, List<point> points, List<UUID> memberUUIDs, long depTime, List<restriction> restrictions) {
+    public group(String groupState, String points, List<UUID> memberUUIDs, long createTime, long depTime, List<restriction> restrictions) {
         this.groupState = groupState;
         this.points = points;
         this.memberUUIDs = memberUUIDs;
         this.depTime = depTime;
+        this.createTime = createTime;
         this.restrictions = restrictions;
+    }
+
+    public group(final Group groupEntity) {
+        this.groupState = groupEntity.getState();
+        this.points = groupEntity.getPoints().toString();
+        this.memberUUIDs = groupEntity.getGroupMembers().stream().map(GroupMember::getUuid).collect(Collectors.toList());
+        this.depTime = groupEntity.getDepartureTimestamp();
+        this.createTime = groupEntity.getCreationTimestamp();
+        this.restrictions = groupEntity.getGroupRestrictions().stream().map(r -> new restriction(r.getType(), r.getValue())).collect(Collectors.toList());
     }
 
     @JsonProperty
@@ -38,13 +54,18 @@ public class group {
     }
 
     @JsonProperty
-    public List<point> getPoints() {
+    public String getPoints() {
         return points;
     }
 
     @JsonProperty
     public List<UUID> getMemberUUIDs() {
         return memberUUIDs;
+    }
+
+    @JsonProperty
+    public long getCreateTime() {
+        return createTime;
     }
 
     @JsonProperty
@@ -63,6 +84,7 @@ public class group {
         if (o == null || getClass() != o.getClass()) return false;
         group group = (group) o;
         return depTime == group.depTime &&
+                createTime == group.createTime &&
                 groupState.equals(group.groupState) &&
                 points.equals(group.points) &&
                 memberUUIDs.equals(group.memberUUIDs) &&

@@ -16,4 +16,32 @@ public class GroupMember {
 
     @Column(name = "uuid")
     private UUID uuid;
+
+    public GroupMember() {}
+
+    public GroupMember(
+            final long id,
+            final Group group,
+            final UUID uuid
+    ) {
+        this.id = id;
+        this.group = group;
+        this.uuid = uuid;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
 }

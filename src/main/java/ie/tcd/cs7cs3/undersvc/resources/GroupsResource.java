@@ -1,8 +1,7 @@
 package ie.tcd.cs7cs3.undersvc.resources;
 
-import com.google.common.collect.ImmutableList;
 import ie.tcd.cs7cs3.undersvc.api.group;
-import ie.tcd.cs7cs3.undersvc.api.point;
+import ie.tcd.cs7cs3.undersvc.core.Group;
 import ie.tcd.cs7cs3.undersvc.db.GroupDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +11,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
-import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * {@link GroupsResource} is a resource for handling GET, POST and PUT requests to `/groups`.
@@ -34,6 +33,6 @@ public class GroupsResource {
 
     @GET
     public List<group> handleGroupsGet() {
-        return groupDAO.listGroups();
+        return groupDAO.findAll().stream().map(group::new).collect(Collectors.toList());
     }
 }

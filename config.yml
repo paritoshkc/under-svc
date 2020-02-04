@@ -6,5 +6,5 @@ database:
   driverClass: com.mysql.jdbc.Driver
   user: user
   password: password
-  url: jdbc:mysql://db:3306/db
+  url: jdbc:mysql://db:3306/underdb
   validationQuery: "/* undersvc Health Check */ SELECT 1"

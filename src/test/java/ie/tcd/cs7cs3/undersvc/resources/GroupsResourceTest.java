@@ -19,11 +19,16 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
+import org.mockito.ArgumentCaptor;
 
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -40,6 +45,7 @@ public class GroupsResourceTest {
     private static final ResourceExtension RESOURCES = ResourceExtension.builder()
             .addResource(new GroupsResource(GROUP_DAO))
             .build();
+    private ArgumentCaptor<Group> groupArgumentCaptor = ArgumentCaptor.forClass(Group.class);
 
     private static List<Group> dummyGroupEntities;
     private static List<group> dummyGroups;
@@ -77,5 +83,19 @@ public class GroupsResourceTest {
         final List<group> resp = tgt.request().get(new GenericType<List<group>>() {});
         verify(GROUP_DAO).findAll();
         assertThat(resp).isEqualTo(dummyGroups);
+    }
+
+    @Test
+    public void testHandleGroupsPost() {
+        final Group expected = dummyGroupEntities.get(0);
+        // XXX: generally bad to use any() in mocks, but hey it makes this test not explode
+        when(GROUP_DAO.create(any())).thenReturn(expected);
+        final WebTarget tgt = RESOURCES.target("/groups");
+        final Entity<group> e = Entity.entity(dummyGroups.get(0), MediaType.APPLICATION_JSON_TYPE);
+        final Response resp = tgt.request(MediaType.APPLICATION_JSON_TYPE).post(e);
+        assertThat(resp.getStatusInfo()).isEqualTo(Response.Status.OK);
+        verify(GROUP_DAO).create(groupArgumentCaptor.capture());
+        final Group actual = groupArgumentCaptor.getValue();
+        assertThat(expected.equals(actual));
     }
 }

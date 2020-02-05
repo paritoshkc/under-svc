@@ -8,6 +8,10 @@ import org.hibernate.query.Query;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * GroupDAO is the data access layer for Groups. If you want to perform CRUD operations on groups, this is who you want
+ * to talk to.
+ */
 public class GroupDAO extends AbstractDAO<Group> {
     /**
      * GroupDAO creates a new DAO with a given session provider.
@@ -27,6 +31,6 @@ public class GroupDAO extends AbstractDAO<Group> {
     }
 
     public Group create(final Group g) {
-        return this.persist(g);
+        return persist(g);
     }
 }

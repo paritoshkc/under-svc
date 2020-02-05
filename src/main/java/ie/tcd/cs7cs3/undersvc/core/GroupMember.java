@@ -3,6 +3,9 @@ package ie.tcd.cs7cs3.undersvc.core;
 import javax.persistence.*;
 import java.util.UUID;
 
+/**
+ * GroupMember is an entity class representing a member of a group, as stored in a backing database.
+ */
 @Entity
 @Table(name = "group_members")
 public class GroupMember {

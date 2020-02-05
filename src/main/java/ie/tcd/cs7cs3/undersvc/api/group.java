@@ -3,16 +3,15 @@ package ie.tcd.cs7cs3.undersvc.api;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import ie.tcd.cs7cs3.undersvc.core.Group;
 import ie.tcd.cs7cs3.undersvc.core.GroupMember;
-import ie.tcd.cs7cs3.undersvc.core.GroupRestriction;
 
-import java.util.ArrayList;
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
- * group is a class to represent a group in JSON
+ * group is a class to represent a group in JSON.
  */
 
 public class group {
@@ -39,9 +38,13 @@ public class group {
         this.restrictions = restrictions;
     }
 
-    public group(final Group groupEntity) {
+    /**
+     * This is a convenience constructor for transforming an api.group to a core.Group.
+     * @param groupEntity the core Group entity
+     */
+    public group(@Nonnull final Group groupEntity) {
         this.groupState = groupEntity.getState();
-        this.points = groupEntity.getPoints().toString();
+        this.points = groupEntity.getPoints().toText();
         this.memberUUIDs = groupEntity.getGroupMembers().stream().map(GroupMember::getUuid).collect(Collectors.toList());
         this.depTime = groupEntity.getDepartureTimestamp();
         this.createTime = groupEntity.getCreationTimestamp();

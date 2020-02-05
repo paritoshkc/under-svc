@@ -1,13 +1,23 @@
 package ie.tcd.cs7cs3.undersvc.core;
 
-import com.google.common.collect.ImmutableList;
+import ie.tcd.cs7cs3.undersvc.api.group;
+import ie.tcd.cs7cs3.undersvc.api.restriction;
+import ie.tcd.cs7cs3.undersvc.utils.GeometryUtils;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.io.ParseException;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
+/**
+ * Group is an entity class that represents how a group is stored in a relational database.
+ * This is intentionally distinct from the {@link ie.tcd.cs7cs3.undersvc.api.group} class which exists only to be
+ * serialized as JSON.
+ */
 @Entity
 @Table(name="groups")
 @NamedQueries(
@@ -41,6 +51,9 @@ public class Group {
     @OneToMany(mappedBy = "group")
     private List<GroupRestriction> groupRestrictions;
 
+    /**
+     * When creating a new Group, it's easiest to use this constructor and call the setter values first.
+     */
     public Group() {
         this.id = 0L;
         this.state = "FORMING";
@@ -51,6 +64,16 @@ public class Group {
         this.groupRestrictions = new ArrayList<>();
     }
 
+    /**
+     * This constructor is mainly for Hibernate to be able to set fields properly. Don't feel like you need to use it.
+     * @param id
+     * @param state
+     * @param creationTimestamp
+     * @param departureTimestamp
+     * @param points
+     * @param groupMembers
+     * @param groupRestrictions
+     */
     public Group(
             final long id,
             final String state,
@@ -67,6 +90,38 @@ public class Group {
         this.points = points;
         this.groupMembers = new ArrayList<>(groupMembers);
         this.groupRestrictions = new ArrayList<>(groupRestrictions);
+    }
+
+    /**
+     * This constructor is a convenience method for transforming a {@link ie.tcd.cs7cs3.undersvc.api.group} to something
+     * that can be stored in a relational database.
+     * @param g the group object you want to transform
+     * @throws ParseException if the group's points is not a valid Well-Known-Text representation of Geometry.
+     */
+    public Group(final group g) throws ParseException {
+        this.state = g.getGroupState();
+        this.creationTimestamp = g.getCreateTime();
+        this.departureTimestamp = g.getDepTime();
+        this.points = GeometryUtils.WKT2MultiPoint(g.getPoints());
+        this.groupMembers = new ArrayList<>();
+        for (final UUID gmid : g.getMemberUUIDs()) {
+            final GroupMember gm = new GroupMember();
+            gm.setUuid(gmid);
+            gm.setGroup(this);
+            this.addGroupMember(gm);
+        }
+        this.groupRestrictions = new ArrayList<>();
+        for (final restriction r : g.getRestrictions()) {
+            final GroupRestriction gr = new GroupRestriction();
+            gr.setType(r.getType());
+            gr.setValue(r.getValue());
+            gr.setGroup(this);
+            this.addGroupRestriction(gr);
+        }
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getState() {
@@ -123,5 +178,24 @@ public class Group {
 
     public void addGroupRestriction(final GroupRestriction r) {
         this.groupRestrictions.add(r);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Group group = (Group) o;
+        return id == group.id &&
+                departureTimestamp == group.departureTimestamp &&
+                creationTimestamp == group.creationTimestamp &&
+                Objects.equals(state, group.state) &&
+                Objects.equals(points, group.points) &&
+                Objects.equals(groupMembers, group.groupMembers) &&
+                Objects.equals(groupRestrictions, group.groupRestrictions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, state, departureTimestamp, creationTimestamp, points, groupMembers, groupRestrictions);
     }
 }

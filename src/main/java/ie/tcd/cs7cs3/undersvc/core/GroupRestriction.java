@@ -2,6 +2,9 @@ package ie.tcd.cs7cs3.undersvc.core;
 
 import javax.persistence.*;
 
+/**
+ * GroupRestriction is an entity class for representing how a group restriction is stored in a backing database.
+ */
 @Entity
 @Table(name="group_restrictions")
 public class GroupRestriction {

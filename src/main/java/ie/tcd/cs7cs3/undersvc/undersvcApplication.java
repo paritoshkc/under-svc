@@ -9,6 +9,7 @@ import io.dropwizard.configuration.SubstitutingSourceProvider;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.db.PooledDataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
+import io.dropwizard.hibernate.ScanningHibernateBundle;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -17,7 +18,7 @@ import io.dropwizard.setup.Environment;
  * undersvcApplication is the base application for undersvc.
  */
 public class undersvcApplication extends Application<undersvcConfiguration> {
-    private final HibernateBundle<undersvcConfiguration> hibernate = new HibernateBundle<undersvcConfiguration>(group.class) {
+    private final ScanningHibernateBundle<undersvcConfiguration> hibernate = new ScanningHibernateBundle<undersvcConfiguration>("ie.tcd.cs7cs3.undersvc.core") {
         @Override
         public DataSourceFactory getDataSourceFactory(undersvcConfiguration config) {
             return config.getDatabase();

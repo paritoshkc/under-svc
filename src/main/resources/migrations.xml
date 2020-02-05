@@ -10,9 +10,9 @@
          http://lonnyj.github.com/liquibase-spatial/liquibase-spatial.xsd">
 
     <changeSet id="1" author="johnstc">
-        <preConditions>
-            <spatial:spatialSupported />
-        </preConditions>
+<!--        <preConditions>-->
+<!--            <spatial:spatialSupported />-->
+<!--        </preConditions>-->
         <createTable tableName="groups">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -34,7 +34,7 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="group_id" type="bigint" autoIncrement="true">
+            <column name="group_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
             <column name="uuid" type="char(36)">
@@ -45,7 +45,7 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="group_id" type="bigint" autoIncrement="true">
+            <column name="group_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
             <column name="type" type="char(64)">

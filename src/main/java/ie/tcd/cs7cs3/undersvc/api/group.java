@@ -20,7 +20,7 @@ public class group {
     public static final String Finished = "Finished";
     private String groupState;
     private String points;
-    private List<UUID> memberUUIDs;
+    private List<String> memberUUIDs;
     private long createTime;
     private long depTime;
     private List<restriction> restrictions;
@@ -29,7 +29,7 @@ public class group {
         // jackson
     }
 
-    public group(String groupState, String points, List<UUID> memberUUIDs, long createTime, long depTime, List<restriction> restrictions) {
+    public group(String groupState, String points, List<String> memberUUIDs, long createTime, long depTime, List<restriction> restrictions) {
         this.groupState = groupState;
         this.points = points;
         this.memberUUIDs = memberUUIDs;
@@ -45,7 +45,7 @@ public class group {
     public group(@Nonnull final Group groupEntity) {
         this.groupState = groupEntity.getState();
         this.points = groupEntity.getPoints().toText();
-        this.memberUUIDs = groupEntity.getGroupMembers().stream().map(GroupMember::getUuid).collect(Collectors.toList());
+        this.memberUUIDs = groupEntity.getGroupMembers().stream().map(gm -> gm.getUuid().toString()).collect(Collectors.toList());
         this.depTime = groupEntity.getDepartureTimestamp();
         this.createTime = groupEntity.getCreationTimestamp();
         this.restrictions = groupEntity.getGroupRestrictions().stream().map(r -> new restriction(r.getType(), r.getValue())).collect(Collectors.toList());
@@ -62,7 +62,7 @@ public class group {
     }
 
     @JsonProperty
-    public List<UUID> getMemberUUIDs() {
+    public List<String> getMemberUUIDs() {
         return memberUUIDs;
     }
 

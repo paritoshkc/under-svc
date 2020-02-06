@@ -104,9 +104,9 @@ public class Group {
         this.departureTimestamp = g.getDepTime();
         this.points = GeometryUtils.WKT2MultiPoint(g.getPoints());
         this.groupMembers = new ArrayList<>();
-        for (final UUID gmid : g.getMemberUUIDs()) {
+        for (final String gmid : g.getMemberUUIDs()) {
             final GroupMember gm = new GroupMember();
-            gm.setUuid(gmid);
+            gm.setUuid(UUID.fromString(gmid));
             gm.setGroup(this);
             this.addGroupMember(gm);
         }

@@ -47,7 +47,7 @@ public class IntegrationTest {
         final group g = new group(
             group.Forming,
             "MULTIPOINT((37.516455 126.721757))",
-            ImmutableList.of(UUID.fromString("deadbeef-dead-beef-dead-deadbeefdead")),
+            ImmutableList.of("deadbeef-dead-beef-dead-deadbeefdead"),
             0L,
             1000L,
             ImmutableList.of(new restriction("MaxPeople", 3))

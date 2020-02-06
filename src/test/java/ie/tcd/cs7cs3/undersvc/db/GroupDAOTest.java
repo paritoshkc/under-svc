@@ -31,7 +31,6 @@ public class GroupDAOTest {
     public DAOTestExtension dte = DAOTestExtension.newBuilder()
             .setShowSql(true)
             .setProperty("hibernate.dialect", "org.hibernate.spatial.dialect.h2geodb.GeoDBDialect")
-//            .setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect")
             .setDriver(org.h2.Driver.class)
             .setHbm2DdlAuto("create")
             .addEntityClass(Group.class)

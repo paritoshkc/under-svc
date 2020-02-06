@@ -26,3 +26,29 @@ The application is run in Google Kubernetes Engine (see: `deployment.yml`).
 Production secrets are stored in Kubernetes and mounted as a volume at runtime (again, see `deployment.yml`).
 
 All you need to do is `git push origin master` and everything should happen automatically.
+
+Talking to it
+---
+To list active groups:
+```bash
+curl http://$HOST:$PORT/groups
+```
+
+Example:
+```bash
+$ curl http://localhost:8080/groups
+[{"groupState":"Forming","points":"MULTIPOINT ((37.516455 126.721757))","memberUUIDs":["64656164-6265-6566-2d64-6561642d6265"],"createTime":0,"depTime":1000,"restrictions":[{"type":"MaxPeople","value":3}]}]
+```
+
+To create a new group:
+```bash
+curl -XPOST http://$HOST:$PORT/groups -H 'Content-Type: application/json' --data '$GROUP_JSON'
+```
+
+Example:
+```bash
+$ curl -XPOST http://localhost:8080/groups \
+    -H 'Content-Type: application/json' \
+    --data '{"groupState":"Forming","points":"MULTIPOINT ((37.516455 126.721757))","memberUUIDs":["64656164-6265-6566-2d64-6561642d6265"],"createTime":0,"depTime":1000,"restrictions":[{"type":"MaxPeople","value":3}]}'
+
+```

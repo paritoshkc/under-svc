@@ -1,6 +1,5 @@
 package ie.tcd.cs7cs3.undersvc.db;
 
-import ie.tcd.cs7cs3.undersvc.api.restriction;
 import ie.tcd.cs7cs3.undersvc.core.Group;
 import ie.tcd.cs7cs3.undersvc.core.GroupMember;
 import ie.tcd.cs7cs3.undersvc.core.GroupRestriction;
@@ -11,7 +10,6 @@ import org.hibernate.query.Query;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * GroupDAO is the data access layer for Groups. If you want to perform CRUD operations on groups, this is who you want

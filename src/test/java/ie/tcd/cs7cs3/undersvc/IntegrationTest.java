@@ -2,8 +2,8 @@ package ie.tcd.cs7cs3.undersvc;
 
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import ie.tcd.cs7cs3.undersvc.api.group;
-import ie.tcd.cs7cs3.undersvc.api.restriction;
 import io.dropwizard.testing.ConfigOverride;
 import io.dropwizard.testing.DropwizardTestSupport;
 import io.dropwizard.testing.ResourceHelpers;
@@ -18,7 +18,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
+import java.util.HashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -50,7 +50,7 @@ public class IntegrationTest {
             ImmutableList.of("deadbeef-dead-beef-dead-deadbeefdead"),
             0L,
             1000L,
-            ImmutableList.of(new restriction("MaxPeople", 3))
+            new HashMap<>(ImmutableMap.of("MaxPeople", 3))
         );
 
         final Client client = new JerseyClientBuilder().build();

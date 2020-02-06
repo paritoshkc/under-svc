@@ -2,12 +2,13 @@ package ie.tcd.cs7cs3.undersvc.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import ie.tcd.cs7cs3.undersvc.core.Group;
-import ie.tcd.cs7cs3.undersvc.core.GroupMember;
+import ie.tcd.cs7cs3.undersvc.core.GroupRestriction;
 
 import javax.annotation.Nonnull;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -23,13 +24,13 @@ public class group {
     private List<String> memberUUIDs;
     private long createTime;
     private long depTime;
-    private List<restriction> restrictions;
+    private Map<String, Integer> restrictions;
 
     public group() {
         // jackson
     }
 
-    public group(String groupState, String points, List<String> memberUUIDs, long createTime, long depTime, List<restriction> restrictions) {
+    public group(String groupState, String points, List<String> memberUUIDs, long createTime, long depTime, HashMap<String, Integer> restrictions) {
         this.groupState = groupState;
         this.points = points;
         this.memberUUIDs = memberUUIDs;
@@ -48,7 +49,10 @@ public class group {
         this.memberUUIDs = groupEntity.getGroupMembers().stream().map(gm -> gm.getUuid().toString()).collect(Collectors.toList());
         this.depTime = groupEntity.getDepartureTimestamp();
         this.createTime = groupEntity.getCreationTimestamp();
-        this.restrictions = groupEntity.getGroupRestrictions().stream().map(r -> new restriction(r.getType(), r.getValue())).collect(Collectors.toList());
+        this.restrictions = new HashMap<>();
+        for (final GroupRestriction gr : groupEntity.getGroupRestrictions()) {
+            restrictions.put(gr.getType(), gr.getValue());
+        }
     }
 
     @JsonProperty
@@ -77,7 +81,7 @@ public class group {
     }
 
     @JsonProperty
-    public List<restriction> getRestrictions() {
+    public Map<String, Integer> getRestrictions() {
         return restrictions;
     }
 

@@ -2,8 +2,6 @@ package ie.tcd.cs7cs3.undersvc.resources;
 
 import com.google.common.collect.ImmutableList;
 import ie.tcd.cs7cs3.undersvc.api.group;
-import ie.tcd.cs7cs3.undersvc.api.point;
-import ie.tcd.cs7cs3.undersvc.api.restriction;
 import ie.tcd.cs7cs3.undersvc.core.Group;
 import ie.tcd.cs7cs3.undersvc.core.GroupMember;
 import ie.tcd.cs7cs3.undersvc.core.GroupRestriction;
@@ -14,11 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPoint;
-import org.locationtech.jts.io.ParseException;
-import org.locationtech.jts.io.WKTReader;
 import org.mockito.ArgumentCaptor;
 
 import javax.ws.rs.client.Entity;
@@ -28,7 +22,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 

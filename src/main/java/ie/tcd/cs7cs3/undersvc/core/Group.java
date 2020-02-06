@@ -1,17 +1,13 @@
 package ie.tcd.cs7cs3.undersvc.core;
 
 import ie.tcd.cs7cs3.undersvc.api.group;
-import ie.tcd.cs7cs3.undersvc.api.restriction;
 import ie.tcd.cs7cs3.undersvc.utils.GeometryUtils;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.io.ParseException;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Group is an entity class that represents how a group is stored in a relational database.
@@ -111,9 +107,9 @@ public class Group {
             this.addGroupMember(gm);
         }
         this.groupRestrictions = new ArrayList<>();
-        for (final restriction r : g.getRestrictions()) {
+        for (final HashMap.Entry<String, Integer> r : g.getRestrictions().entrySet()) {
             final GroupRestriction gr = new GroupRestriction();
-            gr.setType(r.getType());
+            gr.setType(r.getKey());
             gr.setValue(r.getValue());
             gr.setGroup(this);
             this.addGroupRestriction(gr);

@@ -1,9 +1,7 @@
 package ie.tcd.cs7cs3.undersvc.resources;
 
 import ie.tcd.cs7cs3.undersvc.api.group;
-import ie.tcd.cs7cs3.undersvc.api.restriction;
 import ie.tcd.cs7cs3.undersvc.core.Group;
-import ie.tcd.cs7cs3.undersvc.core.GroupMember;
 import ie.tcd.cs7cs3.undersvc.db.GroupDAO;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.slf4j.Logger;
@@ -13,7 +11,6 @@ import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**

@@ -37,7 +37,7 @@ curl http://$HOST:$PORT/groups
 Example:
 ```bash
 $ curl http://localhost:8080/groups
-[{"groupState":"Forming","points":"MULTIPOINT ((37.516455 126.721757))","memberUUIDs":["64656164-6265-6566-2d64-6561642d6265"],"createTime":0,"depTime":1000,"restrictions":[{"type":"MaxPeople","value":3}]}]
+[{"groupState":"Forming","points":"MULTIPOINT ((37.516455 126.721757))","memberUUIDs":["64656164-6265-6566-2d64-6561642d6265"],"createTime":0,"depTime":1000,"restrictions":{"MaxPeople":3}}]
 ```
 
 To create a new group:
@@ -49,6 +49,6 @@ Example:
 ```bash
 $ curl -XPOST http://localhost:8080/groups \
     -H 'Content-Type: application/json' \
-    --data '{"groupState":"Forming","points":"MULTIPOINT ((37.516455 126.721757))","memberUUIDs":["64656164-6265-6566-2d64-6561642d6265"],"createTime":0,"depTime":1000,"restrictions":[{"type":"MaxPeople","value":3}]}'
+    --data '{"groupState":"Forming","points":"MULTIPOINT ((37.516455 126.721757))","memberUUIDs":["64656164-6265-6566-2d64-6561642d6265"],"createTime":0,"depTime":1000,"restrictions":{"MaxPeople":3}}'
 
 ```

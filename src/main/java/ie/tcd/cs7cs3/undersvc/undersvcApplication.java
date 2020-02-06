@@ -1,6 +1,5 @@
 package ie.tcd.cs7cs3.undersvc;
 
-import ie.tcd.cs7cs3.undersvc.api.group;
 import ie.tcd.cs7cs3.undersvc.db.GroupDAO;
 import ie.tcd.cs7cs3.undersvc.resources.GroupsResource;
 import io.dropwizard.Application;

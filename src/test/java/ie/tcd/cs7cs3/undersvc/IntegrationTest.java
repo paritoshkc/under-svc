@@ -3,7 +3,7 @@ package ie.tcd.cs7cs3.undersvc;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import ie.tcd.cs7cs3.undersvc.api.group;
+import ie.tcd.cs7cs3.undersvc.api.GroupResponse;
 import io.dropwizard.testing.ConfigOverride;
 import io.dropwizard.testing.DropwizardTestSupport;
 import io.dropwizard.testing.ResourceHelpers;
@@ -44,8 +44,8 @@ public class IntegrationTest {
     @Test
     @Order(1)
     public void testPostGroups() throws Exception {
-        final group g = new group(
-            group.Forming,
+        final GroupResponse g = new GroupResponse(
+            GroupResponse.Forming,
             "MULTIPOINT((37.516455 126.721757))",
             ImmutableList.of("deadbeef-dead-beef-dead-deadbeefdead"),
             0L,
@@ -54,10 +54,10 @@ public class IntegrationTest {
         );
 
         final Client client = new JerseyClientBuilder().build();
-        final group newGroup = client.target("http://localhost:" + SUPPORT.getLocalPort() + "/groups")
+        final GroupResponse newGroup = client.target("http://localhost:" + SUPPORT.getLocalPort() + "/groups")
                 .request()
                 .post(Entity.entity(g, MediaType.APPLICATION_JSON_TYPE))
-                .readEntity(group.class);
+                .readEntity(GroupResponse.class);
 
         assertThat(newGroup).isNotNull();
         assertThat(newGroup.equals(g));

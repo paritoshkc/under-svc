@@ -1,7 +1,7 @@
 package ie.tcd.cs7cs3.undersvc.resources;
 
 import com.google.common.collect.ImmutableList;
-import ie.tcd.cs7cs3.undersvc.api.group;
+import ie.tcd.cs7cs3.undersvc.api.GroupResponse;
 import ie.tcd.cs7cs3.undersvc.core.Group;
 import ie.tcd.cs7cs3.undersvc.core.GroupMember;
 import ie.tcd.cs7cs3.undersvc.core.GroupRestriction;
@@ -41,7 +41,7 @@ public class GroupsResourceTest {
     private ArgumentCaptor<Group> groupArgumentCaptor = ArgumentCaptor.forClass(Group.class);
 
     private static List<Group> dummyGroupEntities;
-    private static List<group> dummyGroups;
+    private static List<GroupResponse> dummyGroups;
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -61,7 +61,7 @@ public class GroupsResourceTest {
         r1.setValue(3);
         r1.setGroup(g);
         dummyGroupEntities = ImmutableList.of(g);
-        dummyGroups = dummyGroupEntities.stream().map(group::new).collect(Collectors.toList());
+        dummyGroups = dummyGroupEntities.stream().map(GroupResponse::new).collect(Collectors.toList());
     }
 
     @AfterEach
@@ -73,7 +73,7 @@ public class GroupsResourceTest {
     public void testHandleGroupsGet() {
         when(GROUP_DAO.findAll()).thenReturn(dummyGroupEntities);
         final WebTarget tgt = RESOURCES.target("/groups");
-        final List<group> resp = tgt.request().get(new GenericType<List<group>>() {});
+        final List<GroupResponse> resp = tgt.request().get(new GenericType<List<GroupResponse>>() {});
         verify(GROUP_DAO).findAll();
         assertThat(resp).isEqualTo(dummyGroups);
     }
@@ -84,7 +84,7 @@ public class GroupsResourceTest {
         // XXX: generally bad to use any() in mocks, but hey it makes this test not explode
         when(GROUP_DAO.create(any())).thenReturn(expected);
         final WebTarget tgt = RESOURCES.target("/groups");
-        final Entity<group> e = Entity.entity(dummyGroups.get(0), MediaType.APPLICATION_JSON_TYPE);
+        final Entity<GroupResponse> e = Entity.entity(dummyGroups.get(0), MediaType.APPLICATION_JSON_TYPE);
         final Response resp = tgt.request(MediaType.APPLICATION_JSON_TYPE).post(e);
         assertThat(resp.getStatusInfo()).isEqualTo(Response.Status.OK);
         verify(GROUP_DAO).create(groupArgumentCaptor.capture());

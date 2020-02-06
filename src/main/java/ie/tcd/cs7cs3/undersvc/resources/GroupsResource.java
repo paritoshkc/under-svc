@@ -1,6 +1,6 @@
 package ie.tcd.cs7cs3.undersvc.resources;
 
-import ie.tcd.cs7cs3.undersvc.api.group;
+import ie.tcd.cs7cs3.undersvc.api.GroupResponse;
 import ie.tcd.cs7cs3.undersvc.core.Group;
 import ie.tcd.cs7cs3.undersvc.db.GroupDAO;
 import io.dropwizard.hibernate.UnitOfWork;
@@ -33,17 +33,17 @@ public class GroupsResource {
 
     @GET
     @UnitOfWork
-    public List<group> handleGroupsGet() {
-        return groupDAO.findAll().stream().map(group::new).collect(Collectors.toList());
+    public List<GroupResponse> handleGroupsGet() {
+        return groupDAO.findAll().stream().map(GroupResponse::new).collect(Collectors.toList());
     }
 
     @POST
     @UnitOfWork
-    public group handleGroupsPost(@Valid group g) throws Exception {
+    public GroupResponse handleGroupsPost(@Valid GroupResponse g) throws Exception {
         if (null == g) {
             throw new WebApplicationException();
         }
         final Group created = groupDAO.create(new Group(g));
-        return new group(created);
+        return new GroupResponse(created);
     }
 }

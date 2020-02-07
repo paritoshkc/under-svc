@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  * group is a class to represent a group in JSON.
  */
 
-public class group {
+public class GroupResponse {
     public static final String Forming = "Forming";
     public static final String Moving = "Moving";
     public static final String Finished = "Finished";
@@ -26,11 +26,11 @@ public class group {
     private long depTime;
     private Map<String, Integer> restrictions;
 
-    public group() {
+    public GroupResponse() {
         // jackson
     }
 
-    public group(String groupState, String points, List<String> memberUUIDs, long createTime, long depTime, HashMap<String, Integer> restrictions) {
+    public GroupResponse(String groupState, String points, List<String> memberUUIDs, long createTime, long depTime, HashMap<String, Integer> restrictions) {
         this.groupState = groupState;
         this.points = points;
         this.memberUUIDs = memberUUIDs;
@@ -43,7 +43,7 @@ public class group {
      * This is a convenience constructor for transforming an api.group to a core.Group.
      * @param groupEntity the core Group entity
      */
-    public group(@Nonnull final Group groupEntity) {
+    public GroupResponse(@Nonnull final Group groupEntity) {
         this.groupState = groupEntity.getState();
         this.points = groupEntity.getPoints().toText();
         this.memberUUIDs = groupEntity.getGroupMembers().stream().map(gm -> gm.getUuid().toString()).collect(Collectors.toList());
@@ -89,7 +89,7 @@ public class group {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        group group = (group) o;
+        GroupResponse group = (GroupResponse) o;
         return depTime == group.depTime &&
                 createTime == group.createTime &&
                 groupState.equals(group.groupState) &&

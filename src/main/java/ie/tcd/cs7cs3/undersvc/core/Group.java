@@ -1,6 +1,6 @@
 package ie.tcd.cs7cs3.undersvc.core;
 
-import ie.tcd.cs7cs3.undersvc.api.group;
+import ie.tcd.cs7cs3.undersvc.api.GroupResponse;
 import ie.tcd.cs7cs3.undersvc.utils.GeometryUtils;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPoint;
@@ -11,7 +11,7 @@ import java.util.*;
 
 /**
  * Group is an entity class that represents how a group is stored in a relational database.
- * This is intentionally distinct from the {@link ie.tcd.cs7cs3.undersvc.api.group} class which exists only to be
+ * This is intentionally distinct from the {@link GroupResponse} class which exists only to be
  * serialized as JSON.
  */
 @Entity
@@ -89,12 +89,12 @@ public class Group {
     }
 
     /**
-     * This constructor is a convenience method for transforming a {@link ie.tcd.cs7cs3.undersvc.api.group} to something
+     * This constructor is a convenience method for transforming a {@link GroupResponse} to something
      * that can be stored in a relational database.
      * @param g the group object you want to transform
      * @throws ParseException if the group's points is not a valid Well-Known-Text representation of Geometry.
      */
-    public Group(final group g) throws ParseException {
+    public Group(final GroupResponse g) throws ParseException {
         this.state = g.getGroupState();
         this.creationTimestamp = g.getCreateTime();
         this.departureTimestamp = g.getDepTime();

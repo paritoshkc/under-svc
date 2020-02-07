@@ -17,7 +17,7 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="state" type="char(64)">
+            <column name="state" type="char(64) character set utf8mb4 collate utf8mb4_unicode_ci">
                 <constraints nullable="false"/>
             </column>
             <column name="points" type="GEOMETRY(MultiPoint, 4326)">
@@ -37,7 +37,7 @@
             <column name="group_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="uuid" type="char(36)">
+            <column name="uuid" type="binary(36)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -48,7 +48,7 @@
             <column name="group_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="type" type="char(64)">
+            <column name="type" type="char(64) character set utf8mb4 collate utf8mb4_unicode_ci">
                 <constraints nullable="false"/>
             </column>
             <column name="value" type="int">
@@ -59,11 +59,15 @@
                                  baseColumnNames="group_id"
                                  constraintName="fk_group_members_group_id"
                                  referencedTableName="groups"
-                                 referencedColumnNames="id"/>
+                                 referencedColumnNames="id"
+                                 deleteCascade="true"
+        />
         <addForeignKeyConstraint baseTableName="group_restrictions"
                                  baseColumnNames="group_id"
                                  constraintName="fk_group_restrictions_group_id"
                                  referencedTableName="groups"
-                                 referencedColumnNames="id"/>
+                                 referencedColumnNames="id"
+                                 deleteCascade="true"
+        />
     </changeSet>
 </databaseChangeLog>

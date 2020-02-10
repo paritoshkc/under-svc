@@ -52,3 +52,14 @@ $ curl -XPOST http://localhost:8080/groups \
     --data '{"groupState":"Forming","points":"MULTIPOINT ((37.516455 126.721757))","memberUUIDs":["64656164-6265-6566-2d64-6561642d6265"],"createTime":0,"depTime":1000,"restrictions":{"MaxPeople":3}}'
 
 ```
+
+Database Stuff
+---
+
+To create the database locally, run:
+
+```bash
+$ java -jar undersvc.jar db migrate config.yml
+```
+
+Currently you need to do the same thing in production manually if changes need to be made to the schema. This could possibly be automated by adding an [init container](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) to the Kubernetes deployment manifest.

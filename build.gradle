@@ -43,3 +43,7 @@ shadowJar {
         attributes 'Main-Class': mainClass
     }
 }
+
+test {
+	useJUnitPlatform()
+}

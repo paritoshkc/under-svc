@@ -19,6 +19,7 @@ public class GroupResponse {
     public static final String Forming = "Forming";
     public static final String Moving = "Moving";
     public static final String Finished = "Finished";
+    private long groupId;
     private String groupState;
     private String points;
     private List<String> memberUUIDs;
@@ -30,7 +31,8 @@ public class GroupResponse {
         // jackson
     }
 
-    public GroupResponse(String groupState, String points, List<String> memberUUIDs, long createTime, long depTime, HashMap<String, Integer> restrictions) {
+    public GroupResponse(long groupID, String groupState, String points, List<String> memberUUIDs, long createTime, long depTime, HashMap<String, Integer> restrictions) {
+        this.groupId = groupID;
         this.groupState = groupState;
         this.points = points;
         this.memberUUIDs = memberUUIDs;
@@ -43,7 +45,9 @@ public class GroupResponse {
      * This is a convenience constructor for transforming an api.group to a core.Group.
      * @param groupEntity the core Group entity
      */
-    public GroupResponse(@Nonnull final Group groupEntity) {
+    public GroupResponse(@Nonnull final Group groupEntity)
+    {
+        this.groupId=groupEntity.getId();
         this.groupState = groupEntity.getState();
         this.points = groupEntity.getPoints().toText();
         this.memberUUIDs = groupEntity.getGroupMembers().stream().map(gm -> gm.getUuid().toString()).collect(Collectors.toList());
@@ -53,6 +57,14 @@ public class GroupResponse {
         for (final GroupRestriction gr : groupEntity.getGroupRestrictions()) {
             restrictions.put(gr.getType(), gr.getValue());
         }
+    }
+
+    public long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(long groupId) {
+        this.groupId = groupId;
     }
 
     @JsonProperty

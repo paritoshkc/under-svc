@@ -16,6 +16,9 @@ How to start the undersvc application
   - Or run via `docker-compose`: `docker-compose up --build --detach`
 3. Visit `http://localhost:8081/healthcheck` to verify the application is running and healthy.
 
+
+Note: If you get an error while loading on the step-2 then check the config.yml file for the database and use the one which is not being used while commenting the one that is in use.
+
 Deployment
 ---
 
@@ -52,6 +55,9 @@ $ curl -XPOST http://localhost:8080/groups \
     --data '{"groupState":"Forming","points":"MULTIPOINT ((37.516455 126.721757))","memberUUIDs":["64656164-6265-6566-2d64-6561642d6265"],"createTime":0,"depTime":1000,"restrictions":{"MaxPeople":3}}'
 
 ```
+
+Example:
+You can check on the browser by hitting http://localhost:8080/groups to check if the Json loads on the browser.
 
 Database Stuff
 ---

@@ -17,7 +17,7 @@ How to start the undersvc application
 3. Visit `http://localhost:8081/healthcheck` to verify the application is running and healthy.
 
 
-Note: If you get an error while loading on the step-2 then check the config.yml file for the database and use the one which is not being used while commenting the one that is in use.
+Note: If you get an error while loading on step-2 then check the config.yml file for the database and use the one which is not being used while commenting the one that is in use.
 
 Deployment
 ---

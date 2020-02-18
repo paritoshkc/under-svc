@@ -10,7 +10,7 @@ Information is served as JSON over a REST API.
 How to start the undersvc application
 ---
 
-1. Run `./gradlew shadowJar` to build an uber-JAR containing all dependencies.
+1. Run `./gradlew shadowJar` for Linux and 'gradlew.bat shadowJar' for Windows to build  an uber-JAR containing all dependencies.
 2. Either:
   - Run directly: `java -jar build/undersvc-0.0.1-all.jar server config.yml`
   - Or run via `docker-compose`: `docker-compose up --build --detach`

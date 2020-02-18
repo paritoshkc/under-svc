@@ -1,6 +1,7 @@
 package ie.tcd.cs7cs3.undersvc;
 
 import ie.tcd.cs7cs3.undersvc.db.GroupDAO;
+import ie.tcd.cs7cs3.undersvc.resources.GroupResource;
 import ie.tcd.cs7cs3.undersvc.resources.GroupsResource;
 import io.dropwizard.Application;
 import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
@@ -64,6 +65,7 @@ public class undersvcApplication extends Application<undersvcConfiguration> {
                     final Environment environment) {
         final GroupDAO groupDAO = new GroupDAO(hibernate.getSessionFactory());
         environment.jersey().register(new GroupsResource(groupDAO));
+        environment.jersey().register(new GroupResource(groupDAO));
     }
 
     public static void main(final String[] args) throws Exception {

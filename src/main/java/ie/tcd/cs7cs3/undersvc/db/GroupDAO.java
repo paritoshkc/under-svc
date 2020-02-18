@@ -33,6 +33,13 @@ public class GroupDAO extends AbstractDAO<Group> {
         return this.list((Query<Group>) this.namedQuery("ie.tcd.cs7cs3.undersvc.Group.findAll"));
     }
 
+    public void delete(long id)
+    {
+        final Query<?> q = this.namedQuery("ie.tcd.cs7cs3.undersvc.Group.deleteGroupById");
+        q.setParameter("id",id);
+        q.executeUpdate();
+    }
+
     public Group create(final Group g) {
         final Session session = currentSession();
         final Group created = persist(g);

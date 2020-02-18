@@ -8,6 +8,18 @@ import java.util.UUID;
  */
 @Entity
 @Table(name = "group_members")
+@NamedQueries(
+        {
+                @NamedQuery(
+                        name="ie.tcd.cs7cs3.undersvc.GroupMember.findAll",
+                        query="SELECT g FROM GroupMember g"
+                ),
+                @NamedQuery(
+                        name = "ie.tcd.cs7cs3.undersvc.GroupMember.deleteGroupMembersById",
+                        query = "DELETE FROM GroupMember g WHERE g.id =:id "
+                )
+        }
+)
 public class GroupMember {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -35,7 +35,15 @@ public class GroupDAO extends AbstractDAO<Group> {
 
     public void delete(long id)
     {
-        final Query<?> q = this.namedQuery("ie.tcd.cs7cs3.undersvc.Group.deleteGroupById");
+        Query<?> q = this.namedQuery("ie.tcd.cs7cs3.undersvc.GroupRestriction.deleteGroupRestrictionsById");
+        q.setParameter("id", id);
+        q.executeUpdate();
+
+        q = this.namedQuery("ie.tcd.cs7cs3.undersvc.GroupMember.deleteGroupMembersById");
+        q.setParameter("id", id);
+        q.executeUpdate();
+
+        q = this.namedQuery("ie.tcd.cs7cs3.undersvc.Group.deleteGroupById");
         q.setParameter("id",id);
         q.executeUpdate();
     }

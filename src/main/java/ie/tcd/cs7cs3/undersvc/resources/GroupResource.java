@@ -26,7 +26,7 @@ public class GroupResource
 
     @GET
     @UnitOfWork
-    public GroupResponse handleGroupsGetById(@PathParam("groupID") long id)
+    public GroupResponse handleGroupGetById(@PathParam("groupID") long id)
     {
         final Optional<Group> maybeGroup = groupDAO.findById(id);
         if (!maybeGroup.isPresent()) {
@@ -37,7 +37,7 @@ public class GroupResource
 
     @DELETE
     @UnitOfWork
-    public void handleGroupsDeleteByID(@PathParam("groupID") long id)
+    public void handleGroupDeleteByID(@PathParam("groupID") long id)
     {
         this.groupDAO.delete(id);
     }

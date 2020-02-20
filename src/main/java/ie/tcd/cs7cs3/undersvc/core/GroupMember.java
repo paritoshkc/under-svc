@@ -9,14 +9,18 @@ import java.util.UUID;
 @Entity
 @Table(name = "group_members")
 @NamedQueries(
-        {
+        value = {
                 @NamedQuery(
-                        name="ie.tcd.cs7cs3.undersvc.GroupMember.findAll",
-                        query="SELECT g FROM GroupMember g"
+                        name = "ie.tcd.cs7cs3.undersvc.GroupMember.findAll",
+                        query = "SELECT g FROM GroupMember g"
+                ),
+                @NamedQuery(
+                        name = "ie.tcd.cs7cs3.undersvc.GroupMember.findMembersByGroupId",
+                        query = "SELECT g.uuid FROM GroupMember g WHERE g.group.id =:groupId"
                 ),
                 @NamedQuery(
                         name = "ie.tcd.cs7cs3.undersvc.GroupMember.deleteGroupMembersById",
-                        query = "DELETE FROM GroupMember g WHERE g.id =:id "
+                        query = "DELETE FROM GroupMember g WHERE g.uuid =:uuid AND g.group.id =:groupId"
                 )
         }
 )

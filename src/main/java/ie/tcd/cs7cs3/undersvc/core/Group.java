@@ -25,6 +25,10 @@ import java.util.*;
                     query="SELECT g FROM Group g"
                 ),
                 @NamedQuery(
+                        name = "ie.tcd.cs7cs3.undersvc.Group.updateGroupById",
+                        query = "UPDATE Group g set g.state =:state, g.departureTimestamp =:depTime,g.points =:points, g.groupRestrictions =:restrictions where g.id =:id"
+                ),
+                @NamedQuery(
                         name = "ie.tcd.cs7cs3.undersvc.Group.deleteGroupById",
                         query = "DELETE FROM Group g WHERE g.id =:id "
                 )

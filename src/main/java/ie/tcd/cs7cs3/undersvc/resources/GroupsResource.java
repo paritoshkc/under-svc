@@ -43,7 +43,10 @@ public class GroupsResource {
         if (null == g) {
             throw new WebApplicationException();
         }
-        final Group created = groupDAO.create(new Group(g));
-        return new GroupResponse(created);
+        System.out.println("id: " + g.getGroupId());
+
+                System.out.println("group state: " + g.getGroupState());final Group created = groupDAO.create(new Group(g));
+                System.out.println("dep Time: " + g.getDepTime());
+                return new GroupResponse(created);
     }
 }

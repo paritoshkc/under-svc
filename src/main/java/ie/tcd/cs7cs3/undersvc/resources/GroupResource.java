@@ -12,10 +12,7 @@ import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * {@link GroupsResource} is a resource for handling GET, POST and PUT requests to `/groups/{groupId}`.
@@ -26,6 +23,9 @@ public class GroupResource
 {
     private final GroupDAO groupDAO;
     private GroupMember member;
+    long id;
+    private GroupResponse groupResponse;
+    String groupState; long depTime; String points; List<String> uuids; Map<String, Integer> restriction;
 
     public GroupResource(GroupDAO groupDAO) {
         this.groupDAO = groupDAO;
@@ -44,30 +44,61 @@ public class GroupResource
 
     @POST
     @UnitOfWork
-    public GroupResponse handleGroupUpdateById(@PathParam("groupID") long groupId, String groupState,
-                                      long depTime, MultiPoint points, List<UUID> uuids, List<GroupRestriction> restriction)
+//    public void handleGroupUpdateById(@PathParam("groupID") long groupId, String groupState,
+//                                      long depTime, MultiPoint points, List<UUID> uuids, List<GroupRestriction> restriction)
+    public GroupResponse handleGroupUpdateById(@PathParam("groupID") long groupId, @Valid GroupResponse groupResponse)
+//    public void handleGroupUpdateById(@Valid GroupResponse groupResponse)
     {
-        this.groupDAO.deleteMemberByUuid(groupId, uuids);
+        id = groupId;
+//        this.groupResponse = groupResponse;
+//        this.groupState = groupState;
+//        this.depTime = depTime;
+//        this.points = points;
+//        this.uuids = uuids;
+//        this.restriction = restriction;
         Optional<Group> maybeGroup = groupDAO.findById(groupId);
         Group group = maybeGroup.get();
-        if (!groupDAO.isMembersSame(groupId, uuids))
-        {
-            List<UUID> list = groupDAO.getAdditionalMembersInGroup(groupId, uuids);
+//        groupResponse = new GroupResponse(group);
+//        id = Objects.requireNonNull(groupResponse).getGroupId();
+        groupState = groupResponse.getGroupState();
 
-            Iterator iterator = list.iterator();
-            while(iterator.hasNext())
-            {
-                UUID temp = (UUID) iterator.next();
-                member = new GroupMember();
-                member.setGroup(group);
-                member.setUuid(temp);
-                group.addGroupMember(member);
-            }
+        depTime = groupResponse.getDepTime();
+        points = groupResponse.getPoints();
+        uuids = groupResponse.getMemberUUIDs();
+        restriction = groupResponse.getRestrictions();
+
+        System.out.println("id: " + id );
+        System.out.println("group state: " + groupState);
+        System.out.println("dep Time: " + depTime);
+
+        for(int i = 0; i<uuids.size(); i++)
+        {
+            System.out.println("UUid "+i+" : " + uuids.get(i));
         }
-        group.setState(groupState);
-        group.setDepartureTimestamp(depTime);
-        group.setPoints(points);
-        group.setGroupRestrictions(restriction);
+
+
+        this.groupDAO.deleteMemberByUuid(groupId, uuids);
+//        Optional<Group> maybeGroup = this.groupDAO.findById(groupId);
+//        Group group = maybeGroup.get();
+//        if (!this.groupDAO.isMembersSame(groupId, uuids))
+//        {
+//            List<UUID> list = groupDAO.getAdditionalMembersInGroup(groupId, uuids);
+//
+//            Iterator iterator = list.iterator();
+//            while(iterator.hasNext())
+//            {
+//                UUID temp = (UUID) iterator.next();
+//                member = new GroupMember();
+//                member.setUuid(temp);
+//                member.setGroup(group);
+//
+//                group.addGroupMember(member);
+//            }
+//        }
+//        group.setState(groupState);
+//        group.setDepartureTimestamp(depTime);
+//        group.setPoints(points);
+//        group.setGroupRestrictions(restriction);
         return new GroupResponse(group);
     }
 

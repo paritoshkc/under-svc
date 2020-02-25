@@ -16,6 +16,9 @@ import java.util.*;
  * to talk to.
  */
 public class GroupDAO extends AbstractDAO<Group> {
+    private long groupId;
+    private List<String> memberIds;
+
     /**
      * GroupDAO creates a new DAO with a given session provider.
      *
@@ -49,13 +52,22 @@ public class GroupDAO extends AbstractDAO<Group> {
         }
         return created;
     }
-    public void deleteMemberByUuid(long groupId, List<UUID> memberIds)
+    public void deleteMemberByUuid(long groupId, List<String> memberIds)
     {
+        this.groupId = groupId;
+        System.out.println("deleteMemberByUuid: groupId: " + groupId);
+        this.memberIds = memberIds;
+        for(int i =0; i<memberIds.size(); i++)
+            System.out.println("deleteMemberByUuid: memberId: "+ i + memberIds.get(i));
         List<?> uuid;
         Query<?> q = this.namedQuery("ie.tcd.cs7cs3.undersvc.GroupMember.findMembersByGroupId");
         q.setParameter("groupId", groupId );
-        q.executeUpdate();
-        uuid = q.getResultList();
+//        q.executeUpdate();
+        uuid = q.list();
+        for(int i =0; i<uuid.size(); i++)
+            System.out.println("deleteMemberByUuid: memberId: "+ i + uuid.get(i));
+
+//        uuid = q.getResultList();
         Iterator iterator = uuid.iterator();
         while(iterator.hasNext())
         {
@@ -66,6 +78,7 @@ public class GroupDAO extends AbstractDAO<Group> {
                 q1.setParameter("uuid", temp);
                 q1.setParameter("groupId", groupId);
                 q1.executeUpdate();
+
             }
         }
     }

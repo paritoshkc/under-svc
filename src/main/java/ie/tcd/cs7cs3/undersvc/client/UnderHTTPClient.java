@@ -74,12 +74,32 @@ public class UnderHTTPClient {
     }
 
     /**
+     * group returns the webtarget for the given group
+     * @return the group webtarget
+     */
+    private WebTarget group(final long groupID) {
+        return base().path(String.format("groups/%d", groupID));
+    }
+
+    /**
      * listGroups returns a list of all the known groups.
      * @return a list of known groups
      */
     public List<GroupResponse> listGroups() {
         final Invocation.Builder invocationBuilder = groups().request(MediaType.APPLICATION_JSON_TYPE);
         return invocationBuilder.get(new GenericType<List<GroupResponse>>() {});
+    }
+
+    /**
+     * getGroup gets an existing group by ID
+     * @param groupID the groupID to fetch
+     * @return the existing GroupResponse.
+     */
+    public GroupResponse getGroup(final long groupID) throws UnderHTTPClientException {
+        final Invocation.Builder invocationBuilder = group(groupID).request(MediaType.APPLICATION_JSON_TYPE);
+        final Response resp = invocationBuilder.get();
+        bailOnBadResponse(resp);
+        return resp.readEntity(GroupResponse.class);
     }
 
     /**
@@ -90,9 +110,25 @@ public class UnderHTTPClient {
     public GroupResponse createGroup(final GroupResponse g) throws UnderHTTPClientException {
         final Invocation.Builder invocationBuilder = groups().request(MediaType.APPLICATION_JSON_TYPE);
         final Response resp = invocationBuilder.post(Entity.entity(g, MediaType.APPLICATION_JSON));
-        if (resp.getStatus() != 200) {
-            throw new UnderHTTPClientException(String.format("expected 200 OK response but got %d", resp.getStatus()));
-        }
+        bailOnBadResponse(resp);
         return resp.readEntity(GroupResponse.class);
+    }
+
+    /**
+     * updateGroup updates a group a new group
+     * @param g the group to be updated.
+     * @return the created GroupResponse.
+     */
+    public GroupResponse updateGroup(final GroupResponse g) throws UnderHTTPClientException {
+        final Invocation.Builder invocationBuilder = group(g.getGroupId()).request(MediaType.APPLICATION_JSON_TYPE);
+        final Response resp = invocationBuilder.post(Entity.entity(g, MediaType.APPLICATION_JSON));
+        bailOnBadResponse(resp);
+        return resp.readEntity(GroupResponse.class);
+    }
+
+    void bailOnBadResponse(final Response resp) throws UnderHTTPClientException {
+        if (resp.getStatus() != 200) {
+            throw new UnderHTTPClientException(String.format("expected 200 OK response but got %d\nbody:%s", resp.getStatus(), resp.readEntity(String.class)));
+        }
     }
 }

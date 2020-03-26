@@ -5,14 +5,17 @@ import ie.tcd.cs7cs3.undersvc.core.Group;
 import ie.tcd.cs7cs3.undersvc.core.GroupMember;
 import ie.tcd.cs7cs3.undersvc.db.GroupDAO;
 import io.dropwizard.hibernate.UnitOfWork;
+import org.locationtech.jts.io.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * {@link GroupResource} is a resource for handling GET, POST and PUT requests to `/groups/{groupId}`.
@@ -26,7 +29,7 @@ public class GroupResource
     private GroupMember member;
     long id;
     private GroupResponse groupResponse;
-    String groupState; long depTime; String points; List<String> uuids; Map<String, Integer> restriction;
+    String groupState; long depTime; String points; List<UUID> uuids; Map<String, Integer> restriction;
 
     public GroupResource(GroupDAO groupDAO) {
         this.groupDAO = groupDAO;
@@ -51,6 +54,20 @@ public class GroupResource
     public GroupResponse handleGroupUpdateById(@PathParam("groupID") long groupId, @Valid GroupResponse groupResponse)
 //    public void handleGroupUpdateById(@Valid GroupResponse groupResponse)
     {
+        try {
+            final Group g = new Group(groupResponse);
+            g.setId(groupId); // this is a complete hack
+            groupDAO.update(g);
+            return new GroupResponse(groupDAO.findById(groupId).get());
+        } catch (final ParseException e) {
+            LOG.error(String.format("update group %d: parse exception: %s", groupResponse.getGroupId(), e.getMessage()));
+            throw new WebApplicationException(Response.Status.BAD_REQUEST);
+        } catch (final EntityNotFoundException e) {
+            LOG.error(String.format("update group %d: not found: %s", groupResponse.getGroupId(), e.getMessage()));
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+
+        /**
         id = groupId;
 //        this.groupResponse = groupResponse;
 //        this.groupState = groupState;
@@ -66,7 +83,7 @@ public class GroupResource
 
         depTime = groupResponse.getDepTime();
         points = groupResponse.getPoints();
-        uuids = groupResponse.getMemberUUIDs();
+        uuids = groupResponse.getMemberUUIDs().stream().map(UUID::fromString).collect(Collectors.toList());
         restriction = groupResponse.getRestrictions();
 
         System.out.println("id: " + id );
@@ -102,6 +119,7 @@ public class GroupResource
 //        group.setPoints(points);
 //        group.setGroupRestrictions(restriction);
         return new GroupResponse(group);
+     **/
     }
 
     @DELETE

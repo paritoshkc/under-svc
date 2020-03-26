@@ -54,10 +54,10 @@ public class Group {
     @Column(name = "points")
     private MultiPoint points;
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany(mappedBy = "group", cascade=CascadeType.ALL, orphanRemoval = true)
     private List<GroupMember> groupMembers;
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany(mappedBy = "group", cascade=CascadeType.ALL, orphanRemoval = true)
     private List<GroupRestriction> groupRestrictions;
 
     /**

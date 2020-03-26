@@ -11,6 +11,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.Parameter;
 import javax.transaction.Transactional;
 import java.sql.SQLException;
@@ -59,64 +60,100 @@ public class GroupDAO extends AbstractDAO<Group> {
         return created;
     }
 
-    public void deleteMemberByUuid(long groupId, List<String> memberIds)
-    {
-        this.groupId = groupId;
-        System.out.println("deleteMemberByUuid: groupId: " + groupId);
-        this.memberIds = memberIds;
-
-        List<?> uuid;
-        Query<?> q = this.namedQuery("ie.tcd.cs7cs3.undersvc.GroupMember.findMembersByGroupId");
-
-        q.setParameter("groupId", groupId );
-
-//        q.executeUpdate();
-        uuid = q.list();
-        for(int i =0; i<uuid.size(); i++)
-            System.out.println(i + " : Existing List of members : deleteMemberByUuid: memberId: "+ uuid.get(i));
-        for(int i =0; i<memberIds.size(); i++)
-            System.out.println(i + "Input list of members: deleteMemberByUuid: memberId: "+ memberIds.get(i));
-
-//        uuid = q.getResultList();
-        Iterator iterator = uuid.iterator();
-        Transaction tx = null;
-        int ctr = 0;
-        while(iterator.hasNext())
-        {
-//            UUID temp = (UUID) iterator.next();
-            UUID temp = (UUID) iterator.next();
-            System.out.println(ctr + " : temp (member in existing list)" + temp);
-            if(memberIds.contains(temp.toString()))
-            {
-                System.out.println("members(input list) contains temp (in existing list)");
-//                continue;
-            }
-            else
-            {
-                System.out.println("members(input list) DOES NOT contain temp");
-                Query<?> q1 = this.namedQuery("ie.tcd.cs7cs3.undersvc.GroupMember.deleteGroupMembersById");
-                System.out.println("Query : " + q1.getQueryString());
-                System.out.println("inside ELSE: temp: " + temp);
-//                System.out.println("inside ELSE: groupId: " + groupId);
-                q1.setParameter("id", (UUID)temp);
-//                q1.setParameter("groupId", groupId);
-                Parameter<?> u = q1.getParameter("id");
-//                Parameter<?> g = q1.getParameter("groupId");
-                System.out.println("parameter uuid: " + u + " // " + u.toString());
-//                System.out.println("parameter groupID: " + g + " // " + g.toString());
-                q1.executeUpdate();
-            }
-            System.out.println(ctr + " : END WHILE");
-            ctr++;
+    /**
+     * update updates the given group
+     * @param updated
+     */
+    public void update(final Group updated) {
+        final Session session = currentSession();
+        session.detach(updated);
+        final Optional<Group> maybeGroup = this.findById(updated.getId());
+        if (!maybeGroup.isPresent()) {
+            throw new EntityNotFoundException(String.format("group %d not found", updated.getId()));
         }
-        Query<?> q2 = this.namedQuery("ie.tcd.cs7cs3.undersvc.GroupMember.findMembersByGroupId");
-        q2.setParameter("groupId", groupId );
-//        q.executeUpdate();
-        uuid = q2.list();
-        System.out.println("After deleting: ");
-        for(int i =0; i<uuid.size(); i++)
-            System.out.println(i + " : Existing List of members : deleteMemberByUuid: memberId: "+ uuid.get(i));
+
+        final Group existing = maybeGroup.get();
+        existing.setState(updated.getState());
+        existing.setPoints(updated.getPoints());
+        existing.setCreationTimestamp(updated.getCreationTimestamp());
+        existing.setDepartureTimestamp(updated.getDepartureTimestamp());
+        existing.getGroupMembers().clear();
+        existing.getGroupRestrictions().clear();
+        existing.getGroupMembers().addAll(updated.getGroupMembers());
+        existing.getGroupRestrictions().addAll(updated.getGroupRestrictions());
+        session.persist(existing);
+        session.getTransaction().commit();
     }
+
+    public void deleteMemberByUuid(long groupID, List<UUID> memberUUIDs)
+    {
+        final Optional<Group> maybeGroup = this.findById(groupID);
+        if (!maybeGroup.isPresent()) {
+            return;
+        }
+        final Group g = maybeGroup.get();
+        final List<GroupMember> newGroupMembers = g.getGroupMembers();
+        newGroupMembers.removeIf((m) -> memberUUIDs.contains(m.getUuid()));
+        g.setGroupMembers(newGroupMembers);
+        this.persist(g);
+
+//        this.groupId = groupId;
+//        System.out.println("deleteMemberByUuid: groupId: " + groupId);
+//        this.memberIds = memberIds;
+//
+//        List<?> uuid;
+//        Query<?> q = this.namedQuery("ie.tcd.cs7cs3.undersvc.GroupMember.findMembersByGroupId");
+//
+//        q.setParameter("groupId", groupId );
+//
+////        q.executeUpdate();
+//        uuid = q.list();
+//        for(int i =0; i<uuid.size(); i++)
+//            System.out.println(i + " : Existing List of members : deleteMemberByUuid: memberId: "+ uuid.get(i));
+//        for(int i =0; i<memberIds.size(); i++)
+//            System.out.println(i + "Input list of members: deleteMemberByUuid: memberId: "+ memberIds.get(i));
+//
+////        uuid = q.getResultList();
+//        Iterator iterator = uuid.iterator();
+//        Transaction tx = null;
+//        int ctr = 0;
+//        while(iterator.hasNext())
+//        {
+////            UUID temp = (UUID) iterator.next();
+//            UUID temp = (UUID) iterator.next();
+//            System.out.println(ctr + " : temp (member in existing list)" + temp);
+//            if(memberIds.contains(temp.toString()))
+//            {
+//                System.out.println("members(input list) contains temp (in existing list)");
+////                continue;
+//            }
+//            else
+//            {
+//                System.out.println("members(input list) DOES NOT contain temp");
+//                Query<?> q1 = this.namedQuery("ie.tcd.cs7cs3.undersvc.GroupMember.deleteGroupMembersById");
+//                System.out.println("Query : " + q1.getQueryString());
+//                System.out.println("inside ELSE: temp: " + temp);
+////                System.out.println("inside ELSE: groupId: " + groupId);
+//                q1.setParameter("id", (UUID)temp);
+////                q1.setParameter("groupId", groupId);
+//                Parameter<?> u = q1.getParameter("id");
+////                Parameter<?> g = q1.getParameter("groupId");
+//                System.out.println("parameter uuid: " + u + " // " + u.toString());
+////                System.out.println("parameter groupID: " + g + " // " + g.toString());
+//                q1.executeUpdate();
+//            }
+//            System.out.println(ctr + " : END WHILE");
+//            ctr++;
+//        }
+//        Query<?> q2 = this.namedQuery("ie.tcd.cs7cs3.undersvc.GroupMember.findMembersByGroupId");
+//        q2.setParameter("groupId", groupId );
+////        q.executeUpdate();
+//        uuid = q2.list();
+//        System.out.println("After deleting: ");
+//        for(int i =0; i<uuid.size(); i++)
+//            System.out.println(i + " : Existing List of members : deleteMemberByUuid: memberId: "+ uuid.get(i));
+    }
+
     public boolean isMembersSame(long groupId, List<UUID> memberIds)
     {
         List<?> uuid;

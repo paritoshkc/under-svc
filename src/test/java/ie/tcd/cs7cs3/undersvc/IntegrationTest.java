@@ -8,6 +8,7 @@ import ie.tcd.cs7cs3.undersvc.client.UnderHTTPClient;
 import io.dropwizard.testing.ConfigOverride;
 import io.dropwizard.testing.DropwizardTestSupport;
 import io.dropwizard.testing.ResourceHelpers;
+import org.hibernate.cfg.AvailableSettings;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -43,7 +44,7 @@ public class IntegrationTest {
         final GroupResponse g = new GroupResponse(
                 9999, // very improbable in brand-new in-memory H2 DB
                 GroupResponse.Forming,
-                "MULTIPOINT((37.516455 126.721757))",
+                "MULTIPOINT ((37.516455 126.721757))",
                 ImmutableList.of("deadbeef-dead-beef-dead-deadbeefdead"),
                 0L,
                 1000L,
@@ -62,14 +63,53 @@ public class IntegrationTest {
         // Then creating a group should work as expected
         GroupResponse newGroup = client.createGroup(g);
         assertThat(newGroup).isNotNull();
-        assertThat(newGroup.equals(g));
+        // we would expect the group ID to be different
+        assertThat(newGroup.getGroupId()).isNotEqualTo(g.getGroupId());
+        // everything else should be as specified
+        assertThat(newGroup.getGroupState()).isEqualTo(g.getGroupState());
+        assertThat(newGroup.getCreateTime()).isEqualTo(g.getCreateTime());
+        assertThat(newGroup.getDepTime()).isEqualTo(g.getDepTime());
+        assertThat(newGroup.getPoints()).isEqualTo(g.getPoints());
+        assertThat(newGroup.getMemberUUIDs()).isEqualTo(g.getMemberUUIDs());
+        assertThat(newGroup.getRestrictions()).isEqualTo(g.getRestrictions());
 
         // And retrieving the list of groups should include the newly created group
         groups = client.listGroups();
-        assertThat(groups.size() == 1);
-        assertThat(groups.get(0).equals(g));
-        // we would expect the group ID to be different
-        assertThat(groups.get(0).getGroupId() != (g.getGroupId()));
+        assertThat(groups.size()).isEqualTo(1);
+        assertThat(groups.get(0)).isEqualTo(g);
+
+        // We should be able to fetch the group by ID
+        final GroupResponse g1 = client.getGroup(newGroup.getGroupId());
+        assertThat(g1).isNotNull();
+
+        // Updating the group should also work
+        final GroupResponse toUpdate = new GroupResponse(
+                newGroup.getGroupId(),
+                GroupResponse.Moving,
+                "MULTIPOINT ((37.516455 126.721757), (38.516455 127.721757))",
+                ImmutableList.of("cafed00d-cafe-d00d-cafe-d00dcafed00d"),
+                1234L,
+                5678L,
+                new HashMap<>(ImmutableMap.of("MaxPeople", 2))
+        );
+        final GroupResponse updated = client.updateGroup(toUpdate);
+        assertThat(updated.getGroupId()).isEqualTo(toUpdate.getGroupId());
+        assertThat(updated.getGroupState()).isEqualTo(toUpdate.getGroupState());
+        assertThat(updated.getCreateTime()).isEqualTo(toUpdate.getCreateTime());
+        assertThat(updated.getDepTime()).isEqualTo(toUpdate.getDepTime());
+        assertThat(updated.getPoints()).isEqualTo(toUpdate.getPoints());
+        assertThat(updated.getMemberUUIDs()).isEqualTo(toUpdate.getMemberUUIDs());
+        assertThat(updated.getRestrictions()).isEqualTo(toUpdate.getRestrictions());
+
+        // The group should be updated also after issuing a subsequent GET
+        final GroupResponse getAfterUpdate = client.getGroup(toUpdate.getGroupId());
+        assertThat(getAfterUpdate.getGroupId()).isEqualTo(toUpdate.getGroupId());
+        assertThat(getAfterUpdate.getGroupState()).isEqualTo(toUpdate.getGroupState());
+        assertThat(getAfterUpdate.getCreateTime()).isEqualTo(toUpdate.getCreateTime());
+        assertThat(getAfterUpdate.getDepTime()).isEqualTo(toUpdate.getDepTime());
+        assertThat(getAfterUpdate.getPoints()).isEqualTo(toUpdate.getPoints());
+        assertThat(getAfterUpdate.getMemberUUIDs()).isEqualTo(toUpdate.getMemberUUIDs());
+        assertThat(getAfterUpdate.getRestrictions()).isEqualTo(toUpdate.getRestrictions());
     }
 
     public static String createTempFile() {

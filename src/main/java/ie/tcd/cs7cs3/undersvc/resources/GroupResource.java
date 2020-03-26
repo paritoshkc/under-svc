@@ -3,10 +3,10 @@ package ie.tcd.cs7cs3.undersvc.resources;
 import ie.tcd.cs7cs3.undersvc.api.GroupResponse;
 import ie.tcd.cs7cs3.undersvc.core.Group;
 import ie.tcd.cs7cs3.undersvc.core.GroupMember;
-import ie.tcd.cs7cs3.undersvc.core.GroupRestriction;
 import ie.tcd.cs7cs3.undersvc.db.GroupDAO;
 import io.dropwizard.hibernate.UnitOfWork;
-import org.locationtech.jts.geom.MultiPoint;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
@@ -15,13 +15,14 @@ import javax.ws.rs.core.Response;
 import java.util.*;
 
 /**
- * {@link GroupsResource} is a resource for handling GET, POST and PUT requests to `/groups/{groupId}`.
+ * {@link GroupResource} is a resource for handling GET, POST and PUT requests to `/groups/{groupId}`.
  */
 @Path("/groups/{groupID}")
 @Produces(MediaType.APPLICATION_JSON)
 public class GroupResource
 {
     private final GroupDAO groupDAO;
+    private static final Logger LOG = LoggerFactory.getLogger(GroupResource.class);
     private GroupMember member;
     long id;
     private GroupResponse groupResponse;
@@ -44,6 +45,7 @@ public class GroupResource
 
     @POST
     @UnitOfWork
+
 //    public void handleGroupUpdateById(@PathParam("groupID") long groupId, String groupState,
 //                                      long depTime, MultiPoint points, List<UUID> uuids, List<GroupRestriction> restriction)
     public GroupResponse handleGroupUpdateById(@PathParam("groupID") long groupId, @Valid GroupResponse groupResponse)
@@ -106,6 +108,6 @@ public class GroupResource
     @UnitOfWork
     public void handleGroupDeleteByID(@PathParam("groupID") long id)
     {
-        this.groupDAO.delete(id);
+        this.groupDAO.deleteGroupById(id);
     }
 }

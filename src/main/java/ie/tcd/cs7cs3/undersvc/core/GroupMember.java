@@ -1,6 +1,7 @@
 package ie.tcd.cs7cs3.undersvc.core;
 
 import javax.persistence.*;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -27,6 +28,7 @@ import java.util.UUID;
                         name = "ie.tcd.cs7cs3.undersvc.GroupMember.deleteGroupMembersByGroupId",
                         query = "DELETE FROM GroupMember g WHERE g.group.id =:groupId"
                 )
+
         }
 )
 public class GroupMember {
@@ -41,7 +43,19 @@ public class GroupMember {
     @Column(name = "uuid")
     private UUID uuid;
 
+
+    //Constructor
     public GroupMember() {}
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+
 
     public GroupMember(
             final long id,

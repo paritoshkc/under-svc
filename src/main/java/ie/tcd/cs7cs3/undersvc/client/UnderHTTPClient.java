@@ -107,6 +107,7 @@ public class UnderHTTPClient {
      * @param g the group to be created. ID parameter is ignored for obvious reasons.
      * @return the created GroupResponse.
      */
+
     public GroupResponse createGroup(final GroupResponse g) throws UnderHTTPClientException {
         final Invocation.Builder invocationBuilder = groups().request(MediaType.APPLICATION_JSON_TYPE);
         final Response resp = invocationBuilder.post(Entity.entity(g, MediaType.APPLICATION_JSON));

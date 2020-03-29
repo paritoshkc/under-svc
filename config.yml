@@ -2,19 +2,19 @@ logging:
   level: INFO
   loggers:
     ie.tcd.cs7cs3.undersvc: DEBUG
-#database:
-#  driverClass: org.h2.Driver
-#  user: sa
-#  password: sa
-#  url: jdbc:h2:./target/test-undersvc
-#  properties:
-#    hibernate.dialect: org.hibernate.spatial.dialect.h2geodb.GeoDBDialect
-#    hibernate.hbm2ddl.auto: create
-#    show_sql: true
-
 database:
-  driverClass: com.mysql.jdbc.Driver
-  user: user
-  password: password
-  url: jdbc:mysql://db:3306/underdb
-  validationQuery: "/* undersvc Health Check */ SELECT 1"
+  driverClass: org.h2.Driver
+  user: sa
+  password: sa
+  url: jdbc:h2:./target/test-undersvc
+  properties:
+    hibernate.dialect: org.hibernate.spatial.dialect.h2geodb.GeoDBDialect
+    hibernate.hbm2ddl.auto: create
+    show_sql: true
+
+#database:
+#  driverClass: com.mysql.jdbc.Driver
+#  user: user
+#  password: password
+#  url: jdbc:mysql://db:3306/underdb
+#  validationQuery: "/* undersvc Health Check */ SELECT 1"

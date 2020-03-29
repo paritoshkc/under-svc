@@ -12,7 +12,7 @@ How to start the undersvc application
 
 1. Run `./gradlew shadowJar` for Linux and 'gradlew.bat shadowJar' for Windows to build  an uber-JAR containing all dependencies.
 2. Either:
-  - Run directly: `java -jar build/undersvc-0.0.1-all.jar server config.yml`
+  - Run directly: `java -jar build/libs/undersvc-0.0.1-all.jar server config.yml`
   - Or run via `docker-compose`: `docker-compose up --build --detach`
 3. Visit `http://localhost:8081/healthcheck` to verify the application is running and healthy.
 
@@ -55,6 +55,17 @@ $ curl -XPOST http://localhost:8080/groups \
     --data '{"groupState":"Forming","points":"MULTIPOINT ((37.516455 126.721757))","memberUUIDs":["64656164-6265-6566-2d64-6561642d6265"],"createTime":0,"depTime":1000,"restrictions":{"MaxPeople":3}}'
 
 ```
+Example User RATINGS for inserting:
+```
+$ curl -XPOST http://localhost:8080/ratings/64656164-6265-6566-2d64-6561642d6265?rating=2
+
+```
+Example USer RATINGS for getting
+```
+$ curl http://localhost:8080/ratings/64656164-6265-6566-2d64-6561642d6265
+
+```
+
 
 Example:
 You can check on the browser by hitting http://localhost:8080/groups to check if the Json loads on the browser.

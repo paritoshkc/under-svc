@@ -1,7 +1,6 @@
 package ie.tcd.cs7cs3.undersvc.resources;
 
-import ie.tcd.cs7cs3.undersvc.core.GroupMember;
-import ie.tcd.cs7cs3.undersvc.db.GroupMemberDAO;
+import ie.tcd.cs7cs3.undersvc.db.UserRatingDAO;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,16 +18,18 @@ import java.util.UUID;
 
 public class UserRatingResource {
     private static final Logger LOG = LoggerFactory.getLogger(UserRatingResource.class);
-    private GroupMemberDAO groupMemberDAO;
+    private UserRatingDAO userRatingDAO;
 
-    public UserRatingResource(GroupMemberDAO groupMemberDAO) {
+    public UserRatingResource(UserRatingDAO userRatingDAO) {
+        this.userRatingDAO = userRatingDAO;
     }
 
 
     @GET
     @UnitOfWork
     public double handleUserRatingGetByMemberId(@PathParam("memberId")UUID uuid) {
-        double ratings = this.groupMemberDAO.findRatingById(uuid);
+        System.out.println("Hitting IT");
+        double ratings = this.userRatingDAO.getRatingById(uuid);
         return ratings;
     }
 
@@ -36,8 +37,10 @@ public class UserRatingResource {
     @UnitOfWork
     public String handleUserRatingUpdateByMemberId(@PathParam("memberId") UUID uuid,
                                                  @QueryParam("rating") double rating){
+        System.out.println("your entered rating is");
+        System.out.println(rating);
 
-        double newRating = this.groupMemberDAO.updateRatingsById(uuid,rating);
-        return "User rating now updated to " + Double.toString(newRating);
+        this.userRatingDAO.insertRatingsById(uuid,rating);
+        return "successfully inserted " + Double.toString(rating) + "to" + uuid;
     }
 }

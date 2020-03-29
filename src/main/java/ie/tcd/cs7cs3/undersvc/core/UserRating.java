@@ -5,7 +5,7 @@ import javax.persistence.*;
 import java.util.UUID;
 
 /**
- * Userr Rating is an entity class for representing all the ratings that a user got,
+ * User Rating is an entity class for representing all the ratings that a user got,
  * in the particular time frame
  */
 @Entity
@@ -15,11 +15,8 @@ import java.util.UUID;
                 @NamedQuery(
                         name = "ie.tcd.cs7cs3.undersvc.UserRating.getRatingsByMemberId",
                         query = "SELECT u.rating FROM UserRating u WHERE u.uuid = :memberID"
-                ),
-                @NamedQuery(
-                        name = "ie.tcd.cs7cs3.undersvc.UserRating.updateRatingsByMemberId",
-                        query = ""
                 )
+
         }
 )
 

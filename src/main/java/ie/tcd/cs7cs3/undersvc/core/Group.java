@@ -2,13 +2,11 @@ package ie.tcd.cs7cs3.undersvc.core;
 
 import ie.tcd.cs7cs3.undersvc.api.GroupResponse;
 import ie.tcd.cs7cs3.undersvc.utils.GeometryUtils;
-import org.hibernate.annotations.Tables;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.io.ParseException;
 
 import javax.persistence.*;
-import java.lang.annotation.Repeatable;
 import java.util.*;
 
 /**

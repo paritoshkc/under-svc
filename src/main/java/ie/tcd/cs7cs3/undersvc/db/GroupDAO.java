@@ -4,17 +4,11 @@ import ie.tcd.cs7cs3.undersvc.core.Group;
 import ie.tcd.cs7cs3.undersvc.core.GroupMember;
 import ie.tcd.cs7cs3.undersvc.core.GroupRestriction;
 import io.dropwizard.hibernate.AbstractDAO;
-import org.geolatte.geom.MultiPoint;
 import org.hibernate.Session;
-import org.hibernate.SessionBuilder;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.Parameter;
-import javax.transaction.Transactional;
-import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -35,7 +29,7 @@ public class GroupDAO extends AbstractDAO<Group> {
         super(sessionFactory);
     }
 
-    public Optional<Group> findById(final long id) {
+    public Optional<Group> findById(final Long id) {
         return Optional.ofNullable(this.get(id));
     }
 

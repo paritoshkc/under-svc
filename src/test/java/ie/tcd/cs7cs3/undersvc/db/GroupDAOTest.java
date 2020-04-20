@@ -83,7 +83,7 @@ public class GroupDAOTest {
 
     @Test
     public void testCreate() {
-        final Optional<Group> actual = groupDAO.findById(1);
+        final Optional<Group> actual = groupDAO.findById((long) 1);
         assertThat(actual.isPresent());
         assertThat(actual.get()).isEqualTo(dummyGroups.get(0));
     }

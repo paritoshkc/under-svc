@@ -26,7 +26,7 @@ import java.util.UUID;
                 ),
                 @NamedQuery(
                         name = "ie.tcd.cs7cs3.undersvc.GroupMember.deleteGroupMembersByGroupId",
-                        query = "DELETE FROM GroupMember g WHERE g.group.id =:groupId"
+                        query = "DELETE FROM GroupMember g WHERE g.group.id = :groupId"
                 )
 
         }

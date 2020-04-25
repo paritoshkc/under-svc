@@ -16,7 +16,7 @@ import java.util.HashMap;
                 ),
                 @NamedQuery(
                         name = "ie.tcd.cs7cs3.undersvc.GroupRestriction.deleteGroupRestrictionsById",
-                        query = "DELETE FROM GroupRestriction g WHERE g.id =:id "
+                        query = "DELETE FROM GroupRestriction g WHERE g.group.id = :groupId"
                 )
         }
 )
